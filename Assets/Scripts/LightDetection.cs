@@ -14,4 +14,14 @@ public class LightDetection : MonoBehaviour {
     {
         GetComponent<SpriteRenderer>().color = Color.white;
     }
+
+    public void React()
+    {
+
+    }
+
+    public void StopReact()
+    {
+
+    }
 }
