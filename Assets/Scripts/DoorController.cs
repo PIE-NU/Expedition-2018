@@ -14,6 +14,7 @@ public class DoorController : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		//stuff
+		SessionPersistentData.LastScene = SceneManager.GetActiveScene().name;
 		SceneManager.LoadScene(toScene);
 	}
 }
