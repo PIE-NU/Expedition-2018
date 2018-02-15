@@ -8,6 +8,7 @@ public class LightControl : MonoBehaviour {
     public float lanternCharge, flashlightCharge;
     public KeyCode lanternKey, flashlightKey;
     public bool lanternOn, flashlightOn;
+    private float negatorLantern = 1f, negatorFlash = 1f;
     public float lanternFullCharge = 15f, flashlightFullCharge = 10f;
     
 
