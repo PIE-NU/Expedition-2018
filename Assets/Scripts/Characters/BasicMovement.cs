@@ -35,9 +35,9 @@ public class BasicMovement : MonoBehaviour {
 		m_physics = GetComponent<PhysicsTD> ();
 		m_attackable = GetComponent<Attackable> ();
 		Reset ();
-		if (followObj != null) {
-			setTarget (followObj);
-		}
+		//if (followObj != null) {
+		//	setTarget (followObj);
+		//}
 	}
 
 	public void Reset() {
