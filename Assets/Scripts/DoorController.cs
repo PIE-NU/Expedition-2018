@@ -6,16 +6,10 @@ using UnityEngine.SceneManagement;
 public class DoorController : MonoBehaviour {
 
 	public string toScene;
-	private bool locked;
-
-	void Start () {
-		locked = false;
-	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		//stuff
 		SessionPersistentData.LastScene = SceneManager.GetActiveScene().name;
-		//SceneManager.LoadScene(toScene);
+		//TODO: Delegatae scene transition logic to GameManager
 		StartCoroutine(LoadScene(toScene));
 	}
 
