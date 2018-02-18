@@ -7,8 +7,13 @@ public class DoorController : MonoBehaviour {
 
 	public string toScene;
 
+	private GameManager gm;
+
+	void Start(){
+		gm = GameObject.Find("_GM").GetComponent<GameManager>();
+	}
+
 	void OnTriggerEnter2D(Collider2D other) {
-		GameManager gm = GameObject.Find("_GM").GetComponent<GameManager>();
 		gm.SwitchToSceneString (toScene);
 	}
 }
