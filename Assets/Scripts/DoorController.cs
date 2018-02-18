@@ -8,22 +8,7 @@ public class DoorController : MonoBehaviour {
 	public string toScene;
 
 	void OnTriggerEnter2D(Collider2D other) {
-		//SessionPersistentData.LastScene = SceneManager.GetActiveScene().name;
-		//TODO: Delegatae scene transition logic to GameManager
-
 		GameManager gm = GameObject.Find("_GM").GetComponent<GameManager>();
 		gm.SwitchToSceneString (toScene);
-		//StartCoroutine(LoadScene(toScene));
-	}
-
-	IEnumerator LoadScene(string to)
-	{
-		AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(to);
-
-		//Wait until the last operation fully loads to return anything
-		while (!asyncLoad.isDone)
-		{
-			yield return null;
-		}
 	}
 }
