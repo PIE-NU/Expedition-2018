@@ -8,18 +8,19 @@ public class LightControl : MonoBehaviour {
     public float lanternCharge, flashlightCharge;
     public KeyCode lanternKey, flashlightKey;
     public bool lanternOn, flashlightOn;
-    private float negatorLantern = 1f, negatorFlash = 1f;
+    private float negatorLantern = -1f, negatorFlash = -1f;
     public float lanternFullCharge = 15f, flashlightFullCharge = 10f;
 
    
 
     // Use this for initialization
     void Start () {
-        lanternOn = flashlightOn = false;
+        //lanternOn = flashlightOn = false;
         lanternCharge = lanternFullCharge;
         flashlightCharge = flashlightFullCharge;
 
-        
+        lanternOn = lantern.activeInHierarchy;
+        flashlightOn = flashlight.activeInHierarchy;
 	}
 	
 	// Update is called once per frame
@@ -57,7 +58,7 @@ public class LightControl : MonoBehaviour {
                 negatorFlash = -1f;
             }
         }
-        if (lanternCharge > lanternFullCharge)
+        if (lanternCharge >= lanternFullCharge && !lanternOn)
             lanternCharge = lanternFullCharge;
         else if (lanternCharge <= 0f && lanternOn)
         {
@@ -69,7 +70,7 @@ public class LightControl : MonoBehaviour {
             lanternCharge += Time.deltaTime * negatorLantern;
         
 
-        if (flashlightCharge > flashlightFullCharge)
+        if (flashlightCharge >= flashlightFullCharge && !flashlightOn)
             flashlightCharge = flashlightFullCharge;
         else if (flashlightCharge <= 0f && flashlightOn)
         {
