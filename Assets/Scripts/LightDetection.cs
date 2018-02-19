@@ -2,26 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightDetection : MonoBehaviour {
+public abstract class LightDetection : MonoBehaviour {
 
     
 	public void OnTriggerEnter2D(Collider2D c)
     {
-        GetComponent<SpriteRenderer>().color = Color.red;
+        //Calls function with specific reaction
+        React();
     }
 
     public void OnTriggerExit2D(Collider2D c)
     {
-        GetComponent<SpriteRenderer>().color = Color.white;
+        //Calls function to stop specific reaction
+        StopReact();
     }
 
-    public void React()
-    {
+    public abstract void React();
 
-    }
-
-    public void StopReact()
-    {
-
-    }
+    public abstract void StopReact();
 }

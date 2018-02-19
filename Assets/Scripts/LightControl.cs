@@ -10,17 +10,22 @@ public class LightControl : MonoBehaviour {
     public bool lanternOn, flashlightOn;
     private float negatorLantern = 1f, negatorFlash = 1f;
     public float lanternFullCharge = 15f, flashlightFullCharge = 10f;
-    
 
-	// Use this for initialization
-	void Start () {
+   
+
+    // Use this for initialization
+    void Start () {
         lanternOn = flashlightOn = false;
         lanternCharge = lanternFullCharge;
         flashlightCharge = flashlightFullCharge;
+
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+
         if (Input.GetKeyDown(lanternKey))
         {
             if (lanternOn)
