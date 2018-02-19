@@ -14,15 +14,15 @@ public class Flashlight : MonoBehaviour {
 
     private Quaternion upRotation, downRotation, leftRotation, rightRotation;
 
-    public Direction dir;
+    private Direction dir;
 
     // Use this for initialization
     void Start () {
         if (directionComponent == null)
             directionComponent = GetComponent<PhysicsTD>();
 
-        upRotation = transform.rotation;
-        downRotation = Quaternion.Inverse(transform.rotation);
+        upRotation = Quaternion.Euler(-70f, 0f, 0f);
+        downRotation = Quaternion.Euler(70f, 0f, 0f);
         leftRotation = Quaternion.Euler(0f, -70f, 90f);
         rightRotation = Quaternion.Euler(0f, 70f, -90f);
 
@@ -30,7 +30,10 @@ public class Flashlight : MonoBehaviour {
         dir = directionComponent.Dir;
         ChooseDirection();
     }
-	
+	void OnEnable()
+    {
+        ChooseDirection();
+    }
 	// Update is called once per frame
 	void Update () {
 

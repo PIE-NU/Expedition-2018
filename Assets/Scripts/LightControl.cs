@@ -7,8 +7,8 @@ public class LightControl : MonoBehaviour {
     public GameObject lantern, flashlight;
     public float lanternCharge, flashlightCharge;
     public KeyCode lanternKey, flashlightKey;
-    public bool lanternOn, flashlightOn;
-    private float negatorLantern = -1f, negatorFlash = -1f;
+    private bool lanternOn, flashlightOn;
+    private float negateLantern = -1f, negateFlash = -1f;
     public float lanternFullCharge = 15f, flashlightFullCharge = 10f;
 
    
@@ -33,13 +33,13 @@ public class LightControl : MonoBehaviour {
             {
                 lantern.SetActive(false);
                 lanternOn = false;
-                negatorLantern = 1f;
+                negateLantern = 1f;
             }
             else
             {
                 lantern.SetActive(true);
                 lanternOn = true;
-                negatorLantern = -1f;
+                negateLantern = -1f;
             }
         }
 
@@ -49,13 +49,13 @@ public class LightControl : MonoBehaviour {
             {
                 flashlight.SetActive(false);
                 flashlightOn = false;
-                negatorFlash = 1f;
+                negateFlash = 1f;
             }
             else
             {
                 flashlight.SetActive(true);
                 flashlightOn = true;
-                negatorFlash = -1f;
+                negateFlash = -1f;
             }
         }
         if (lanternCharge >= lanternFullCharge && !lanternOn)
@@ -64,10 +64,10 @@ public class LightControl : MonoBehaviour {
         {
             lanternOn = false;
             lantern.SetActive(false);
-            negatorLantern = 1f;
+            negateLantern = 1f;
         }
         else
-            lanternCharge += Time.deltaTime * negatorLantern;
+            lanternCharge += Time.deltaTime * negateLantern;
         
 
         if (flashlightCharge >= flashlightFullCharge && !flashlightOn)
@@ -76,10 +76,10 @@ public class LightControl : MonoBehaviour {
         {
             flashlightOn = false;
             flashlight.SetActive(false);
-            negatorFlash = 1f;
+            negateFlash = 1f;
         }
         else
-            flashlightCharge += Time.deltaTime * negatorFlash;
+            flashlightCharge += Time.deltaTime * negateFlash;
         
     }
 }
