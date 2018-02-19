@@ -5,12 +5,15 @@ using UnityEngine;
 public class AIRoomController : MonoBehaviour {
 
 	List<AIFighter> m_aiFighters;
+	List<FighterTask> m_tasks;
 	Fighter player;
 
 
 	void Start () {
 		CollectFighters ();
+		CreateTasks ();
 	}
+
 	void CollectFighters() {
 		m_aiFighters = new List<AIFighter> ();
 		foreach (BasicMovement fighterObj in Object.FindObjectsOfType<BasicMovement>()) {
@@ -32,21 +35,23 @@ public class AIRoomController : MonoBehaviour {
 			m_aiFighters.Add (fighterInfo);
 		}
 	}
-	
-	void Update () {
-		Vector2 center = new Vector2 (1, 1);
-		Vector2 target = circle_based_target_finder(center, 1f);
+
+	void CreateTasks() {
+		m_tasks = new List<FighterTask> ();
+		int count = 0;
 		foreach (AIFighter fighter in m_aiFighters) {
-			if (Vector2.Distance((Vector2)fighter.BasicMove.transform.position,target) < .1)
-				continue;
-			fighter.BasicMove.moveToPoint ((Vector3)target);
+			DefendPointTask task = new DefendPointTask ();
+			task.Init (player, fighter);
+			task.center = new Vector2 (1, 1);
+			task.radius = (count % 2 == 0) ? 1f : 2f;
+			m_tasks.Add (task);
+			count++;
 		}
 	}
-	Vector2 circle_based_target_finder(Vector2 center, float radius) {
-		Vector2 x = player.transform.position;
-		Vector2 d = x-center;
-		d.Normalize ();
-		return center + (d * radius);
-	} 
 
+	void Update () {
+		foreach (FighterTask task in m_tasks) {
+			task.Advance ();
+		}
+	}
 }
