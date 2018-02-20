@@ -9,6 +9,9 @@ public class Fighter : MonoBehaviour {
 	
 	Dictionary<string,AttackInfo> attacks = new Dictionary<string,AttackInfo>();
 
+	public bool AutoOrientSprite = true;
+	public string IdleAnimation = "idle";
+	public string WalkAnimation = "walk";
 	public string HurtAnimation = "hit";
 	public string CurrentAttackName;
 
@@ -54,7 +57,7 @@ public class Fighter : MonoBehaviour {
 	protected void update() {
 		m_startingNewAttack = false;
 		if (stunTime > 0.0f) {
-			m_anim.Play (HurtAnimation, true);
+			m_anim.Play (HurtAnimation, AutoOrientSprite);
 
 			stunTime = Mathf.Max (0.0f, stunTime - Time.deltaTime);
 			if (stunTime == 0.0f && m_attackable.alive) {
@@ -110,9 +113,9 @@ public class Fighter : MonoBehaviour {
 	}
 	internal void playAnimations() {
 		if (m_physics.AttemptingMovement) {
-			m_anim.Play ("walk", true);
+			m_anim.Play (WalkAnimation, AutoOrientSprite);
 		} else {
-			m_anim.Play ("idle", true);
+			m_anim.Play (IdleAnimation, AutoOrientSprite);
 		}
 	}
 	// Update is called once per frame
