@@ -14,8 +14,6 @@ public class GameManager : MonoBehaviour {
 	public static GameManager Instance
 	{
 		get {
-//			if (m_instance == null)
-//				m_instance = this;
 			return m_instance;
 		}
 		set { m_instance = value; }
@@ -28,13 +26,13 @@ public class GameManager : MonoBehaviour {
 		if (m_instance == null) {
 			Debug.Log ("Instantiated GM");
 			m_instance = this;
+			SessionPersistentData pData = new SessionPersistentData();
 		}else if(m_instance != this){
 			Destroy (gameObject);
 		}
 
 		DontDestroyOnLoad (gameObject);
 
-		SessionPersistentData pData = new SessionPersistentData();
 		string lastScene = pData.LastScene;
 
 		if (lastScene != null) {
