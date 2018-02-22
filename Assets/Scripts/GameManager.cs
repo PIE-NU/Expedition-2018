@@ -24,16 +24,22 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		//Check if instance already exists
 		if (m_instance == null) {
+			//Instantiation logic should go entirely in here.
 			Debug.Log ("Instantiated GM");
 			m_instance = this;
-			SessionPersistentData pData = new SessionPersistentData();
+			m_data = new SessionPersistentData();
+
+			SceneManager.sceneLoaded += OnSceneLoaded;
 		}else if(m_instance != this){
 			Destroy (gameObject);
+			return;
 		}
 
 		DontDestroyOnLoad (gameObject);
+	}
 
-		string lastScene = pData.LastScene;
+	void OnSceneLoaded (Scene scene, LoadSceneMode mode) {
+		string lastScene = m_data.LastScene;
 
 		if (lastScene != null) {
 			Debug.Log ("Last scene was:" + lastScene);
@@ -42,12 +48,8 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	void Update () {
-		
-	}
-
 	public void SwitchToSceneString(string to){
-		Debug.Log ("GM was told to switch to scene " + to);
+		m_data.LastScene = SceneManager.GetActiveScene ().name;
 		SceneManager.LoadScene (to);
 	}
 }
