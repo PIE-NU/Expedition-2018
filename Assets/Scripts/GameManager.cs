@@ -1,5 +1,6 @@
 ﻿/*
  * Singleton game manager intended to be persistent across all scenes.
+ * Singleton maintained by creating a static instance of the class recursively.
  */
 
 using System.Collections;
@@ -9,32 +10,31 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-	private static SessionPersistentData m_data;
-	public  SessionPersistentData PersistentData
-	{
-		get {
-			if (m_data == null)
-				m_data = new SessionPersistentData();
-			return m_data;
-		}
-		set { m_data = value; }
-	}
-
-
 	private static GameManager m_instance;
-	public  GameManager GM
+	public static GameManager Instance
 	{
 		get {
-			if (m_instance == null)
-				m_instance = new GameManager();
+//			if (m_instance == null)
+//				m_instance = this;
 			return m_instance;
 		}
 		set { m_instance = value; }
 	}
 
+	private SessionPersistentData m_data;
+
 	void Start () {
-		GM = this;
-		SessionPersistentData pData = PersistentData;
+		//Check if instance already exists
+		if (m_instance == null) {
+			Debug.Log ("Instantiated GM");
+			m_instance = this;
+		}else if(m_instance != this){
+			Destroy (gameObject);
+		}
+
+		DontDestroyOnLoad (gameObject);
+
+		SessionPersistentData pData = new SessionPersistentData();
 		string lastScene = pData.LastScene;
 
 		if (lastScene != null) {

@@ -14,6 +14,8 @@ public class DoorController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		gm.SwitchToSceneString (toScene);
+		if (other.gameObject.name == "player") {
+			gm.SwitchToSceneString (toScene);
+		}
 	}
 }
