@@ -11,6 +11,7 @@ public class DoorController : MonoBehaviour {
 
 	void Start(){
 		gm = GameObject.Find("_GM").GetComponent<GameManager>();
+		//TODO: Check if door is a HubWorld door and lock appropriately based on player progress.
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
