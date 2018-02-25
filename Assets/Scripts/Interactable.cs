@@ -15,6 +15,7 @@ public class Interactable : MonoBehaviour {
 	void Start () {
         trigger_area = GetComponent<Collider2D>();
         actor = null;
+        //Will become true if the interactor presses/holds the interaction key while in this interactable's area
         hold_trigger = false;
         press_trigger = false;
 

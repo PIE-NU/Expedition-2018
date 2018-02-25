@@ -33,7 +33,8 @@ public class Pushable : MonoBehaviour {
                 _bm = trigger_area.actor.gameObject.GetComponent<BasicMovement>();
             }
         }
-        //Assign the right direction
+
+        //Assign the right direction 
         if (trigger_area.gameObject.GetComponent<BoxCollider2D>().offset.y > 0)
         {
             facing_direction = "DOWN";
@@ -51,9 +52,12 @@ public class Pushable : MonoBehaviour {
         {
             facing_direction = "RIGHT";
         }
-
+        //-------------------------------
+        //Update the basic movement script
         _bm.push_direction = facing_direction;
         _bm.can_drag_item = draggable;
+
+        //Run when the player presses the interaction key
         if (trigger_area.press_trigger && first_trigger)
         {
 
