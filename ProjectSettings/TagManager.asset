@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - Obstacle
-  - 
+  - Ignore Light
   - 
   - 
   - 
@@ -43,4 +43,7 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground Top
+    uniqueID: 635114163
     locked: 0

@@ -12,6 +12,10 @@ public class BasicMovement : MonoBehaviour {
 	public float MoveSpeed = 8.0f;
 	float m_velocityXSmoothing;
 	float m_velocityYSmoothing;
+
+    //for pushing items
+    public string push_direction;
+    public bool can_drag_item;
 	//-------------------
 
 	PhysicsTD m_physics;
@@ -78,7 +82,33 @@ public class BasicMovement : MonoBehaviour {
 		}else if (m_physics.canMove && autonomy) {
 			inputY = Input.GetAxis ("Vertical");
 			inputX = Input.GetAxis("Horizontal");
-			if (inputX > 0.1f) {
+            //When pushing an object L/R, we cannot move U/D (vice versa)
+            if(push_direction== "UP" || push_direction == "DOWN")
+            {
+                inputX = 0;
+                if(push_direction == "UP" && !can_drag_item && inputY < 0)
+                {
+                    inputY = 0;
+                }
+                if (push_direction == "DOWN" && !can_drag_item && inputY > 0)
+                {
+                    inputY = 0;
+                }
+            }
+            else if (push_direction == "LEFT" || push_direction == "RIGHT")
+            {
+                inputY = 0;
+                if (push_direction == "LEFT" && !can_drag_item && inputX > 0)
+                {
+                    inputX = 0;
+                }
+                if (push_direction == "RIGHT" && !can_drag_item && inputX < 0)
+                {
+                    inputX = 0;
+                }
+            }
+            //------------------------------------------------------------
+            if (inputX > 0.1f) {
 				m_physics.setDirection (Direction.RIGHT);
 			} else if (inputX < -0.1f) {
 				m_physics.setDirection (Direction.LEFT);
