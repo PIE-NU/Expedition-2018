@@ -35,7 +35,7 @@ public class LightDetection : MonoBehaviour {
 
     private void Update()
     {
-        if(player.GetComponent<SpriteRenderer>().sortingOrder < 30 + _spr.sortingOrder )//&& (player.transform.position.x < transform.position.x))
+        if(player.GetComponent<SpriteRenderer>().sortingOrder < transform.localScale.y*100f + _spr.sortingOrder )//&& (player.transform.position.x < transform.position.x))
         {
             gameObject.layer = 9;
         }
