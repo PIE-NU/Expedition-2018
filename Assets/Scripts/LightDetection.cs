@@ -2,46 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightDetection : MonoBehaviour {
+public abstract class LightDetection : MonoBehaviour {
 
-    SpriteRenderer _spr;
-    GameObject player;
-
-    private void Start()
+    
+	public void OnTriggerEnter2D(Collider2D c)
     {
-        _spr = GetComponent<SpriteRenderer>();
-        player = GameObject.Find("player");
-    }
-
-    public void OnTriggerEnter2D(Collider2D c)
-    {
-        GetComponent<SpriteRenderer>().color = Color.red;
+        //Calls function with specific reaction
+        React();
     }
 
     public void OnTriggerExit2D(Collider2D c)
     {
-        GetComponent<SpriteRenderer>().color = Color.white;
+        //Calls function to stop specific reaction
+        StopReact();
     }
 
-    public void React()
-    {
+    public abstract void React();
 
-    }
-
-    public void StopReact()
-    {
-
-    }
-
-    private void Update()
-    {
-        if(player.GetComponent<SpriteRenderer>().sortingOrder < transform.localScale.y*100f + _spr.sortingOrder )//&& (player.transform.position.x < transform.position.x))
-        {
-            gameObject.layer = 9;
-        }
-        else
-        {
-            gameObject.layer = 8;
-        }
-    }
+    public abstract void StopReact();
 }
