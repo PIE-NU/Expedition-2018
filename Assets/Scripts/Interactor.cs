@@ -29,7 +29,7 @@ public class Interactor : MonoBehaviour {
                 if (Input.GetKey(Interaction_Key))
                 {
                     prompted_interaction.hold_trigger = true;
-                    promt_ui.text = "TRIGGERED!";
+                    //promt_ui.text = "TRIGGERED!";
                 }
                 else
                 {
