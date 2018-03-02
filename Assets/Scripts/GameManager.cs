@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour {
 	private SessionPersistentData m_data;
 	private GameProgress m_progress;
 
+	public GameObject SideShadowTemplate;
+
 	void Start () {
 		//Check if instance already exists
 		if (m_instance == null) {
