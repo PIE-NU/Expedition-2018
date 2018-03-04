@@ -47,6 +47,7 @@ public class Interactor : MonoBehaviour {
             else
             {
                 prompted_interaction.hold_trigger = false;
+                prompted_interaction.press_trigger = false;
                 prompted_interaction = null;
                 promt_ui.text = "";
             }
