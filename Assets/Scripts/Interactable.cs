@@ -14,7 +14,6 @@ public class Interactable : MonoBehaviour {
         // Use this for initialization
 	void Start () {
         trigger_area = GetComponent<Collider2D>();
-        actor = null;
         //Will become true if the interactor presses/holds the interaction key while in this interactable's area
         hold_trigger = false;
         press_trigger = false;
@@ -23,14 +22,21 @@ public class Interactable : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+       /* if (!trigger_area.IsTouching(actor.gameObject.GetComponent<Collider2D>()))
+        {
+            actor.prompted_interaction = null;
+            actor = null;
+        }*/
 	}
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (actor = collision.gameObject.GetComponent<Interactor>())
+        if (collision.gameObject.GetComponent<Interactor>())
         {
+            actor = collision.gameObject.GetComponent<Interactor>();
             actor.prompted_interaction = this;
         }
     }
+
+   
 }

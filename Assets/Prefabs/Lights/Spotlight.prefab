@@ -9,74 +9,74 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1504442356053658}
+  m_RootGameObject: {fileID: 1608637050904190}
   m_IsPrefabParent: 1
---- !u!1 &1504442356053658
+--- !u!1 &1608637050904190
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4404260607609254}
-  - component: {fileID: 108869956454564110}
-  - component: {fileID: 114985055678780264}
+  - component: {fileID: 4575008346732160}
+  - component: {fileID: 108735354193950688}
+  - component: {fileID: 114941298723775722}
   m_Layer: 0
-  m_Name: Flashlight
+  m_Name: Spotlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1640082177069980
+--- !u!1 &1673353067748836
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4395972728407218}
-  - component: {fileID: 58587871954202140}
+  - component: {fileID: 4230958090713838}
+  - component: {fileID: 58610032234022002}
   m_Layer: 10
-  m_Name: FlashlightDetectionCollider
+  m_Name: SpotlightDetectionCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4395972728407218
+--- !u!4 &4230958090713838
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1640082177069980}
+  m_GameObject: {fileID: 1673353067748836}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4404260607609254}
+  m_Father: {fileID: 4575008346732160}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4404260607609254
+--- !u!4 &4575008346732160
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1504442356053658}
+  m_GameObject: {fileID: 1608637050904190}
   m_LocalRotation: {x: -0.57357675, y: -0.00000009685753, z: -0.00000026822087, w: 0.8191518}
-  m_LocalPosition: {x: -0.0000004172325, y: -1.5, z: -0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4395972728407218}
+  - {fileID: 4230958090713838}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -70, y: 0, z: 0}
---- !u!58 &58587871954202140
+--- !u!58 &58610032234022002
 CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1640082177069980}
+  m_GameObject: {fileID: 1673353067748836}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -86,12 +86,12 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -2}
   serializedVersion: 2
   m_Radius: 2
---- !u!108 &108869956454564110
+--- !u!108 &108735354193950688
 Light:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1504442356053658}
+  m_GameObject: {fileID: 1608637050904190}
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 0
@@ -122,20 +122,21 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &114985055678780264
+--- !u!114 &114941298723775722
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1504442356053658}
+  m_GameObject: {fileID: 1608637050904190}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 971867498b1eb0b4cb08c807a3af1a36, type: 3}
+  m_Script: {fileID: 11500000, guid: 9692ae379b8e9cd4b8f61a4901258e87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  directionComponent: {fileID: 0}
-  player: {fileID: 0}
-  upPosition: {x: 0, y: -1, z: 0}
-  downPosition: {x: 0, y: 1, z: -0.5}
-  leftPosition: {x: 1.25, y: -0.25, z: -0.5}
-  rightPosition: {x: -1.25, y: -0.25, z: -0.5}
+  AttachedObject: {fileID: 0}
+  upPosition: {x: 0, y: 0, z: -0.3}
+  downPosition: {x: 0, y: 0, z: 0}
+  leftPosition: {x: 0, y: 0, z: 0}
+  rightPosition: {x: 0, y: 0, z: 0}
+  LightCanRotate: 0
+  PermanentDirection: 2
