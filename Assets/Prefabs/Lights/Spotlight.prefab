@@ -37,8 +37,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4230958090713838}
   - component: {fileID: 58610032234022002}
-  m_Layer: 0
-  m_Name: FlashlightDetectionCollider
+  m_Layer: 10
+  m_Name: SpotlightDetectionCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

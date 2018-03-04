@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4395972728407218}
   - component: {fileID: 58587871954202140}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FlashlightDetectionCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,4 +139,3 @@ MonoBehaviour:
   downPosition: {x: 0, y: 1, z: -0.5}
   leftPosition: {x: 1.25, y: -0.25, z: -0.5}
   rightPosition: {x: -1.25, y: -0.25, z: -0.5}
-  dir: 0
