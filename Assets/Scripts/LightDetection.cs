@@ -24,7 +24,7 @@ public abstract class LightDetection : MonoBehaviour {
         //Calls function to stop specific reaction
         StopReact();
     }
-
+    
     public abstract void React();
 
     public abstract void StopReact();
