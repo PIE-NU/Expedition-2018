@@ -53,11 +53,43 @@ public class ObjectSpotlight : MonoBehaviour {
             ChooseDirection();
         }
     }
-
+    /// <summary>
+    /// ChooseDirection changes the direction of the spotlight based on the parent object's Direction.
+    /// If this is to be automatic, ensure LightCanRotate is true.
+    /// </summary>
     void ChooseDirection()
     {
         //Direction d = directionComponent.Dir;
         Direction d = PermanentDirection;
+        switch (d)
+        {
+            //Add position to parent object pos
+            //Quaternion rotation to current direction
+            case Direction.UP:
+                transform.position = AttachedObject.transform.position + upPosition;
+                transform.rotation = upRotation;
+                break;
+            case Direction.DOWN:
+                transform.position = AttachedObject.transform.position + downPosition;
+                transform.rotation = downRotation;
+                break;
+            case Direction.LEFT:
+                transform.position = AttachedObject.transform.position + leftPosition;
+                transform.rotation = leftRotation;
+                break;
+            case Direction.RIGHT:
+                transform.position = AttachedObject.transform.position + rightPosition;
+                transform.rotation = rightRotation;
+                break;
+        }
+        dir = d;
+    }
+    /// <summary>
+    /// ChangeDirection takes a Direction from an outside source and changes the spotlight direction
+    /// </summary>
+    /// <param name="d"></param>
+    public void ChangeDirection(Direction d)
+    {
         switch (d)
         {
             //Add position to parent object pos
