@@ -7,15 +7,17 @@ public class DoorController : MonoBehaviour {
 
 	public string toScene;
 
-	private GameManager gm;
+	public GameManager gm;
 
 	void Start(){
-		gm = GameObject.Find("_GM").GetComponent<GameManager>();
-		//TODO: Check if door is a HubWorld door and lock appropriately based on player progress.
-	}
-	
-	// comment to make different from master
-	
+
+	    //This is not right. We are keeping the game manager on the main camera
+        //gm = GameObject.Find("_GM").GetComponent<GameManager>();
+
+        gm = Camera.main.GetComponent<GameManager>();
+        //TODO: Check if door is a HubWorld door and lock appropriately based on player progress.
+    }
+
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.gameObject.name == "player") {
