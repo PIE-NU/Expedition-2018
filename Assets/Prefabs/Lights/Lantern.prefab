@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4004257701729352}
   - component: {fileID: 58873941543717182}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LanternDetectionCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
