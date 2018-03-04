@@ -26,7 +26,7 @@ public class Interactable : MonoBehaviour {
 		
 	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (actor = collision.gameObject.GetComponent<Interactor>())
         {

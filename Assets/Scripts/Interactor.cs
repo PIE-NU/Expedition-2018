@@ -21,9 +21,10 @@ public class Interactor : MonoBehaviour {
 	void Update () {
         if (prompted_interaction)
         {
-           
+            //Debug.Log("We are getting an interactable");
+            Debug.Log(prompted_interaction);
 
-           if (col.IsTouching(prompted_interaction.gameObject.GetComponent<Collider2D>()))
+            if (col.IsTouching(prompted_interaction.gameObject.GetComponent<Collider2D>()))
             {
                 promt_ui.text = "Press '" + Interaction_Key + "' " + prompted_interaction.interaction_string;
                 if (Input.GetKey(Interaction_Key))
