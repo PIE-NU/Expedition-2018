@@ -1365,16 +1365,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114761508127248346, guid: c476ca82af3c7224c8f6493a6e76b0bf,
-        type: 2}
-      propertyPath: interaction_string
-      value: 'FUCK '
-      objectReference: {fileID: 0}
-    - target: {fileID: 61533366115774468, guid: c476ca82af3c7224c8f6493a6e76b0bf,
-        type: 2}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c476ca82af3c7224c8f6493a6e76b0bf, type: 2}
   m_IsPrefabParent: 0

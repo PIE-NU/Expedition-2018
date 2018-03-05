@@ -88,29 +88,33 @@ public class ObjectSpotlight : MonoBehaviour {
     /// ChangeDirection takes a Direction from an outside source and changes the spotlight direction
     /// </summary>
     /// <param name="d"></param>
-    public void ChangeDirection(Direction d)
+    /// temporaily chaning this to take in an int because I'm not sure how to get this to work right
+    /// I need to learn how dis stuff works. I have no idea - swei
+    public void ChangeDirection(int d)
     {
+        Debug.Log("Trying to change direction");
+        Debug.Log(d);
         switch (d)
         {
             //Add position to parent object pos
             //Quaternion rotation to current direction
-            case Direction.UP:
+            case 0:
                 transform.position = AttachedObject.transform.position + upPosition;
                 transform.rotation = upRotation;
                 break;
-            case Direction.DOWN:
+            case 1:
                 transform.position = AttachedObject.transform.position + downPosition;
                 transform.rotation = downRotation;
                 break;
-            case Direction.LEFT:
+            case 2:
                 transform.position = AttachedObject.transform.position + leftPosition;
                 transform.rotation = leftRotation;
                 break;
-            case Direction.RIGHT:
+            case 3:
                 transform.position = AttachedObject.transform.position + rightPosition;
                 transform.rotation = rightRotation;
                 break;
         }
-        dir = d;
+        //dir = d;
     }
 }

@@ -22,7 +22,7 @@ public class Interactor : MonoBehaviour {
         if (prompted_interaction)
         {
             //Debug.Log("We are getting an interactable");
-            Debug.Log(prompted_interaction);
+            //Debug.Log(prompted_interaction);
 
             if (col.IsTouching(prompted_interaction.gameObject.GetComponent<Collider2D>()))
             {

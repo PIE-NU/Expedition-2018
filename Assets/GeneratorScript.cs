@@ -5,6 +5,7 @@ using UnityEngine;
 public class GeneratorScript : Interactable
 { 
     public bool buttonPressed = false;
+    public ObjectSpotlight mySpotlight;
 
 	void Update () {
 	    if (press_trigger)
