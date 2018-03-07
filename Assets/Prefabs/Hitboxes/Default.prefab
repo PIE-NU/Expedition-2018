@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 61733827546846202}
   - component: {fileID: 114445130771488398}
   m_Layer: 0
-  m_Name: Hitbox
+  m_Name: Default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,20 +77,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f94893c9865b2cd4fb1e3a643ef0f853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collidedObjs: []
-  damage: 10
-  fixedKnockback: 0
-  knockback: {x: 0, y: 40}
-  hitboxDuration: 1
-  TimedHitbox: 1
-  faction: noFaction
-  followObj: {fileID: 0}
-  creator: {fileID: 0}
-  hitFX: {fileID: 0}
-  blockFX: {fileID: 0}
-  toFollow: 0
-  reflect: 1
-  followOffset: {x: 0, y: 0}
-  stun: 0
-  mAttr: []
-  Active: 1
+  m_damage: 10
+  m_duration: 1
+  m_hasDuration: 1
+  m_isFixedKnockback: 0
+  m_knockback: {x: 0, y: 40}
+  m_followObj: {fileID: 0}
+  m_followOffset: {x: 0, y: 0}
+  m_stun: 0
+  m_isRandomKnockback: 0

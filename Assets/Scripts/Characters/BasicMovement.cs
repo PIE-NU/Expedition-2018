@@ -119,7 +119,7 @@ public class BasicMovement : MonoBehaviour {
 				m_physics.setDirection (Direction.DOWN);
 			}
 			if (Input.GetButton ("Fire1")) {
-				GetComponent<Fighter> ().tryAttack ("default");
+				//GetComponent<Fighter> ().tryAttack ("default");
 			}
 		}
 	}

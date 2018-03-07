@@ -59,24 +59,24 @@ public class Attackable : MonoBehaviour {
 
 	public string takeHit(Hitbox hb) {
 		Debug.Log (gameObject + "is Taking hit");
-		if (hb.mAttr != null) {
+		if (hb.HitTypes != null) {
 			foreach (string k in resistences.Keys) {
-				if (hb.mAttr.Contains(k)) {
+				if (hb.HitTypes.Contains(k)) {
 					if (GetComponent<Fighter> ()) {
-						GetComponent<Fighter> ().registerStun( hb.stun,false,hb);
+						GetComponent<Fighter> ().registerStun( hb.Stun,false,hb);
 					}
 					return "block";
 				}
 			}
 		}
-		damageObj (hb.damage);
+		damageObj (hb.Damage);
 		if (gameObject.GetComponent<PhysicsTD> ()) {
-			if (hb.fixedKnockback) {
-				addToVelocity (hb.knockback);
+			if (hb.IsFixedKnockback) {
+				addToVelocity (hb.Knockback);
 			} else {
 				Vector3 otherPos = hb.gameObject.transform.position;
 				float angle = Mathf.Atan2 (transform.position.y - otherPos.y, transform.position.x - otherPos.x); //*180.0f / Mathf.PI;
-				float magnitude = hb.knockback.magnitude;
+				float magnitude = hb.Knockback.magnitude;
 				float forceX = Mathf.Cos (angle) * magnitude;
 				float forceY = Mathf.Sin (angle) * magnitude;
 				Vector2 force = new Vector2 (forceX, forceY);
@@ -87,8 +87,8 @@ public class Attackable : MonoBehaviour {
 				addToVelocity (force);
 			}
 		}
-		if (hb.stun > 0 && GetComponent<Fighter> ()) {
-			GetComponent<Fighter> ().registerStun( hb.stun,true,hb);
+		if (hb.Stun > 0 && GetComponent<Fighter> ()) {
+			GetComponent<Fighter> ().registerStun( hb.Stun,true,hb);
 		}
 		return "hit";
 	}
