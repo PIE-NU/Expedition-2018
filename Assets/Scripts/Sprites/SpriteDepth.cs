@@ -46,12 +46,12 @@ public class SpriteDepth : MonoBehaviour {
 		if (AutoOffset && GetComponent<BoxCollider2D>()) {
 			Vector3 sc = transform.localScale;
 			BoxCollider2D bc = GetComponent<BoxCollider2D> ();
-			Y_SortOffset =  -bc.offset.y - bc.size.y/2f;
-			if (sc.y < 1f) {
+			Y_SortOffset =  (bc.offset.y - Mathf.Abs(bc.size.y/2f)) * sc.y;
+			/*if (sc.y < 1f) {
 				Y_SortOffset += (1f - sc.y) * 1.5f;
 			} else {
 				Y_SortOffset -= (sc.y - 1f) * 1.5f;
-			}
+			}*/
 			//Y_SortOffset = GetComponent<BoxCollider2D> ().offset.y * sc.y * sc.y; //* 2f - (sc.y * (bc.size.y/2f));
 		}
 	}
