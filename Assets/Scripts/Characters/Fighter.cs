@@ -90,7 +90,7 @@ public class Fighter : MonoBehaviour {
 						Vector2 realOff = m_currentAttack.HitboxOffset;
 						float damage = m_currentAttack.damage;
 						float stun = m_currentAttack.stun;
-						m_hitboxMaker.addAttrs (m_currentAttack.hitType);
+						m_hitboxMaker.AddHitType(m_currentAttack.hitType);
 						realOff = gameObject.GetComponent<PhysicsTD> ().OrientVectorToDirection (m_currentAttack.HitboxOffset);
 						m_hitboxMaker.createHitbox (m_currentAttack.HitboxScale, realOff, damage, stun, m_currentAttack.hitboxDuration, kb, true, m_faction, true);
 					}
@@ -166,6 +166,7 @@ public class Fighter : MonoBehaviour {
 	}
 
 	public void registerHit(GameObject otherObj) {
+		Debug.Log ("Collision: " + this + " " + otherObj);
 		if (m_currentAttack != null) {
 			m_currentAttack.onHitConfirm (otherObj);
 			GetComponent<BasicMovement> ().onHitConfirm(otherObj);
@@ -175,7 +176,7 @@ public class Fighter : MonoBehaviour {
 	public void endStun() {
 		if (m_attackable.alive) {
 			m_physics.canMove = true;
-			m_hitboxMaker.clearAttrs ();
+			m_hitboxMaker.ClearHitTypes();
 			stunTime = 0.0f;
 			hitCombo = 0;
 		}
