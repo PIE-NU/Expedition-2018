@@ -128,9 +128,9 @@ public class PhysicsTD : MonoBehaviour
 		m_collisions.Reset();
 
 		if (m_velocity.x != 0 || m_inputedMove.x != 0)
-			HorizontalCollisions(ref m_velocity);
+			HorizontalCollisions();
 		if (m_velocity.y != 0 || m_inputedMove.y != 0)
-			VerticalCollisions(ref m_velocity);
+			VerticalCollisions();
 		
 		m_velocity.y *= Y_SpeedRatio;
 		transform.Translate (m_velocity);
@@ -162,10 +162,10 @@ public class PhysicsTD : MonoBehaviour
 		return hit && !hit.collider.isTrigger && hit.collider.gameObject != gameObject;
 	}
 
-	private void HorizontalCollisions(ref Vector2 velocity)
+	private void HorizontalCollisions()
 	{
-		float directionX = Mathf.Sign(velocity.x == 0 ? m_inputedMove.x : m_velocity.x);
-		float rayLength = Mathf.Max(0.05f, Mathf.Abs(velocity.x) + m_skinWidth);
+		float directionX = Mathf.Sign(m_velocity.x == 0 ? m_inputedMove.x : m_velocity.x);
+		float rayLength = Mathf.Max(0.05f, Mathf.Abs(m_velocity.x) + m_skinWidth);
 
 		for (int i = 0; i < m_horizontalRayCount; ++i)
 		{
@@ -180,28 +180,27 @@ public class PhysicsTD : MonoBehaviour
 			//Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, hit ? Color.red : Color.green);
 			if (ValidCollision(hit))
 			{
-				velocity.x = (hit.distance - m_skinWidth) * directionX;
+				m_velocity.x = (hit.distance - m_skinWidth) * directionX;
 				rayLength = hit.distance;
 			}
 		}
 
 	}
 
-	private void VerticalCollisions(ref Vector2 velocity)
+	private void VerticalCollisions()
 	{
-		// Shouldn't it be velocity.y used in the conditional? TODO: figure that out.
-		float directionY = Mathf.Sign(velocity.x == 0 ? m_inputedMove.y : m_velocity.y);
-		float rayLength = Mathf.Abs (velocity.y) + m_skinWidth;
+		float directionY = Mathf.Sign(m_velocity.y == 0 ? m_inputedMove.y : m_velocity.y);
+		float rayLength = Mathf.Abs (m_velocity.y) + m_skinWidth;
 
 		for (int i = 0; i < m_verticalRayCount; ++i)
 		{
 			Vector2 rayOrigin = (directionY == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.topLeft;
-			rayOrigin += Vector2.right * (m_verticalRaySpacing * i + velocity.x);
+			rayOrigin += Vector2.right * (m_verticalRaySpacing * i + m_velocity.x);
 
 			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, CollisionMask);
 			if (ValidCollision(hit))
 			{
-				velocity.y = (hit.distance - m_skinWidth) * directionY;
+				m_velocity.y = (hit.distance - m_skinWidth) * directionY;
 				rayLength = hit.distance;
 				m_collisions.below = directionY == -1;
 				m_collisions.above = directionY == 1;
