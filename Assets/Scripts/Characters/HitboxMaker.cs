@@ -2,23 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitboxMaker : MonoBehaviour {
-
+public class HitboxMaker : MonoBehaviour
+{
 	public GameObject hitboxClass;
 	public List<string> hitTypes;
 	PhysicsTD m_physics;
+	Fighter m_fighter;
 
 	void Awake () {
-		m_physics = GetComponent<PhysicsTD> ();
+		m_physics = GetComponent<PhysicsTD>();
+		m_fighter = GetComponent<Fighter>();
 	}
 
-	public Hitbox createHitbox(Vector2 hitboxScale, Vector2 offset,float damage, float stun, float hitboxDuration, Vector2 knockback,bool fixedKnockback,string faction, bool followObj) {
-		Vector2 cOff = m_physics.OrientVectorToDirection (offset);
-		Vector3 newPos = transform.position + new Vector3(cOff.x,cOff.y,0f);
-		GameObject go = Instantiate(hitboxClass,newPos,Quaternion.identity) as GameObject;
-		go.transform.SetParent (gameObject.transform);
-		Hitbox newBox = go.GetComponent<Hitbox> ();
-		newBox.SetScale (m_physics.OrientScaleToDirection(hitboxScale));
+	public Hitbox CreateHitbox(Vector2 hitboxScale, Vector2 offset, float damage, float stun, float hitboxDuration, Vector2 knockback, bool fixedKnockback, bool followObj)
+	{
+		Vector2 cOff = m_physics.OrientVectorToDirection(offset);
+		Vector3 newPos = transform.position + (Vector3)cOff;
+		var go = GameObject.Instantiate(hitboxClass, newPos, Quaternion.identity);
+		go.transform.SetParent(gameObject.transform);
+
+		Hitbox newBox = go.GetComponent<Hitbox>();
+		newBox.SetScale(m_physics.OrientScaleToDirection(hitboxScale));
 		newBox.Damage = damage;
 		newBox.Duration = hitboxDuration;
 		newBox.Knockback = m_physics.OrientVectorToDirection(knockback);
@@ -26,29 +30,32 @@ public class HitboxMaker : MonoBehaviour {
 		newBox.Stun = stun;
 		newBox.HitTypes = hitTypes;
 		newBox.Creator = gameObject;
-		if (followObj) {
+		if (followObj)
 			newBox.SetFollow (gameObject,offset);
-		}
+
+		newBox.Init();
 		return newBox;
 	}
 
-	public void ClearHitboxes() {
-		foreach (Hitbox hb in GetComponentsInChildren<Hitbox>()) {
+	public void ClearHitboxes()
+	{
+		foreach (Hitbox hb in GetComponentsInChildren<Hitbox>())
 			Destroy(hb.gameObject);
-		}
 	}
 
-	public void RegisterHit(GameObject otherObj) {
-		if (gameObject.GetComponent<Fighter> ()) {
-			gameObject.GetComponent<Fighter> ().registerHit (otherObj);
-		}
+	public void RegisterHit(GameObject otherObj)
+	{
+		if (m_fighter)
+			m_fighter.RegisterHit (otherObj);
 	}
 
-	public void AddHitType(string hitType) {
+	public void AddHitType(string hitType)
+	{
 		hitTypes.Add (hitType);
 	}
 
-	public void ClearHitTypes() {
+	public void ClearHitTypes()
+	{
 		hitTypes = new List<string> ();
 	}
 

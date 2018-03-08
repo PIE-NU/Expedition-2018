@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class AvoidTask : FighterTask 
 {
-	public int speed = 3;
+	public int Speed = 3;
 	override public void Advance() 
 	{
 		Vector2 target = WalkAway(Player.transform.position, Fighter.Fighter.transform.position);
-		for (int i = 0; i < speed; i++) {
-			Fighter.BasicMove.moveToPoint((Vector3)target);
-		}
+		for (int i = 0; i < Speed; i++)
+			Fighter.BasicMove.MoveToPoint((Vector3)target);
 	}
 
 	// Calculates the vector leading away from the player.

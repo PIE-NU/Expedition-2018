@@ -42,7 +42,7 @@ public class CameraFollow : MonoBehaviour {
 
 		if (focusArea.velocity.x != 0) {
 			lookAheadDirX = Mathf.Sign (focusArea.velocity.x);
-			if (Mathf.Sign(target.SelfInput.x) == Mathf.Sign(focusArea.velocity.x) && target.SelfInput.x != 0) {
+			if (Mathf.Sign(target.InputedMove.x) == Mathf.Sign(focusArea.velocity.x) && target.InputedMove.x != 0) {
 				lookAheadStopped = false;
 				targetLookAheadX = lookAheadDirX * lookAheadDstX;
 			}

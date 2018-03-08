@@ -2,117 +2,113 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attackable : MonoBehaviour {
+public class Attackable : MonoBehaviour
+{
+	private float m_health = 100.0f;
+	public float Health { get { return m_health; } private set { m_health = value; } }
+	public float MaxHealth = 100.0f;
 
-	public float health = 100.0f;
-	public float max_health = 100.0f;
-	public bool alive = true;
-	public bool immortal = false;
-	public string faction = "noFaction";
-	public string groupID = "";
-	public GameObject HitEffect;
-	public GameObject HealEffect;
-	public GameObject DeathEffect;
-	public float EnergyRegenRate = 10.0f;
-	public string mHitSound = "None";
-	public float deathTime = 0.0f;
-	public Color deathColor = new Color(0.0f,0.0f,0.0f);
-	float currDeathTime;
+	public bool Alive = true;
+	public float DeathTime = 0.0f;
+	private float m_currDeathTime;
 
-	public AudioClip Hit;
+	public Dictionary<string,float> Resistences = new Dictionary<string,float>();
+	private PhysicsTD m_movementController;
+	private Fighter m_fighter;
 
+	// public AudioClip Hit;
 
-	public Dictionary<string,float> resistences = new Dictionary<string,float>();
-
-	PhysicsTD movementController;
-	// Use this for initialization
-	void Start () {
-		movementController = gameObject.GetComponent<PhysicsTD> ();
-		health = Mathf.Min (health, max_health);
-		currDeathTime = deathTime;
+	internal void Awake()
+	{
+		m_movementController = GetComponent<PhysicsTD>();
+		m_fighter = GetComponent<Fighter>();
+		m_health = Mathf.Min (m_health, MaxHealth);
+		m_currDeathTime = DeathTime;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		alive = health > 0;
-		if (!alive && !immortal) {
-			if (currDeathTime > 0.0) {
-				currDeathTime -= Time.deltaTime;
-			} else {
-				Destroy (gameObject);
-			}
-		}
-		List<string> keys = new List<string> (resistences.Keys);
 
-		foreach (string k in keys) {
-			float time = resistences [k] - Time.deltaTime;
-			resistences [k] = time;
-			if (resistences [k] <= 0.0f) {
-				resistences.Remove (k);
-			}
+	private void CheckDeath()
+	{
+		Alive = m_health > 0;
+		if (Alive)
+			return;
+		if (m_currDeathTime < 0.0f)
+			Destroy(gameObject);
+		m_currDeathTime -= Time.deltaTime;
+	}
+
+	private void CheckResistanceValidities()
+	{
+		List<string> keys = new List<string> (Resistences.Keys);
+		foreach (string k in keys)
+		{
+			Resistences[k] -= Time.deltaTime;
+			if (Resistences[k] <= 0.0f)
+				Resistences.Remove(k);
 		}
 	}
 
-	public void addResistence(string attribute, float time) {
-		resistences [attribute] = time;
+	internal void Update() {
+		CheckDeath();
+		CheckResistanceValidities();
 	}
 
-	public string takeHit(Hitbox hb) {
-		Debug.Log (gameObject + "is Taking hit");
-		if (hb.HitTypes != null) {
-			foreach (string k in resistences.Keys) {
-				if (hb.HitTypes.Contains(k)) {
-					if (GetComponent<Fighter> ()) {
-						GetComponent<Fighter> ().registerStun( hb.Stun,false,hb);
-					}
-					return "block";
-				}
+	public void AddResistence(string attribute, float time) {
+		Resistences[attribute] = time;
+	}
+
+	private bool CheckHasResistanceTo(List<string> hitTypes)
+	{
+		foreach (string k in Resistences.Keys) {
+			if (hitTypes.Contains(k)) {
+				return true;
 			}
 		}
-		damageObj (hb.Damage);
-		if (gameObject.GetComponent<PhysicsTD> ()) {
-			if (hb.IsFixedKnockback) {
-				addToVelocity (hb.Knockback);
-			} else {
-				Vector3 otherPos = hb.gameObject.transform.position;
-				float angle = Mathf.Atan2 (transform.position.y - otherPos.y, transform.position.x - otherPos.x); //*180.0f / Mathf.PI;
-				float magnitude = hb.Knockback.magnitude;
-				float forceX = Mathf.Cos (angle) * magnitude;
-				float forceY = Mathf.Sin (angle) * magnitude;
-				Vector2 force = new Vector2 (forceX, forceY);
-				float counterF = (gameObject.GetComponent<PhysicsTD> ().velocity.y * (1 / Time.deltaTime));
-				if (counterF < 0) {
-					force.y = force.y - counterF;
-				}
-				addToVelocity (force);
-			}
+		return false;
+	}
+
+	private void ApplyHitToPhysicsTD(Hitbox hb)
+	{
+		if (!m_movementController)
+			return;
+
+		if (hb.IsFixedKnockback)
+		{
+			m_movementController.AddToVelocity(hb.Knockback);
+			return;
 		}
-		if (hb.Stun > 0 && GetComponent<Fighter> ()) {
-			GetComponent<Fighter> ().registerStun( hb.Stun,true,hb);
+
+		Vector3 hitVector = transform.position - hb.transform.position;
+		float angle = Mathf.Atan2(hitVector.y,hitVector.x); //*180.0f / Mathf.PI;
+		Vector2 force = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+		force.Scale(new Vector2(hb.Knockback.magnitude, hb.Knockback.magnitude));
+		float counterF = m_movementController.Velocity.y * (1 / Time.deltaTime);
+		if (counterF < 0)
+			force.y = force.y - counterF;
+		
+		m_movementController.AddToVelocity(force);
+	}
+
+	public string TakeHit(Hitbox hb)
+	{
+		// Debug.Log (gameObject + "is Taking hit");
+		if (hb.HasHitTypes() && CheckHasResistanceTo(hb.HitTypes))
+		{
+			if (m_fighter)
+				m_fighter.RegisterStun(hb.Stun, false, hb);
+			return "block";
 		}
+
+		DamageObj(hb.Damage);
+		ApplyHitToPhysicsTD(hb);
+
+		if (hb.Stun > 0 && m_fighter)
+			m_fighter.RegisterStun(hb.Stun, true, hb);
 		return "hit";
 	}
 
-	public void damageObj(float damage) {
-		health = Mathf.Max(Mathf.Min(max_health, health - damage),0);
-		alive = (health > 0);
-	}
-
-	public void resetHealth() {
-		damageObj (-1000f);
-	}
-
-	public void addToVelocity(Vector2 veloc )
+	public void DamageObj(float damage)
 	{
-		if (movementController) {
-			movementController.addToVelocity(veloc);
-		} 
-	}
-
-	public void AddConstantVel(Vector2 veloc, float time)
-	{
-		if (movementController) {
-			movementController.addSelfForce (veloc, time);
-		}
+		m_health = Mathf.Max(Mathf.Min(MaxHealth, m_health - damage), 0);
+		Alive = (m_health > 0);
 	}
 }

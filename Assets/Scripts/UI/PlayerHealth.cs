@@ -39,7 +39,7 @@ public class PlayerHealth : MonoBehaviour {
 
 	void CheckPlayerHealth () {
 		float oldHealth = currentHealth;
-		currentHealth = player.health;
+		currentHealth = player.Health;
 		//isDead = player.alive;
 		damaged = currentHealth < oldHealth;
 	}

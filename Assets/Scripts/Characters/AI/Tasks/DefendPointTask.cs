@@ -6,17 +6,15 @@ public class DefendPointTask : FighterTask
 {
 	public Vector2 Center;
 	public float Radius;
-	public int speed = 3;
+	public int Speed = 3;
 
 	override public void Advance() 
 	{
 		Vector2 target = DefendPoint(Center, Radius);
 		if (Vector2.Distance((Vector2)Fighter.BasicMove.transform.position, target) < .1f)
 			return;
-		for (int i = 0; i < speed; i++)
-		{
-			Fighter.BasicMove.moveToPoint((Vector3)target);
-		}
+		for (int i = 0; i < Speed; i++)
+			Fighter.BasicMove.MoveToPoint((Vector3)target);
 	}
 
 	Vector2 DefendPoint(Vector2 center, float radius) 

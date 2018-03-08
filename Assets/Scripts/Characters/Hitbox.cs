@@ -49,64 +49,87 @@ public class Hitbox : MonoBehaviour {
 	private Vector4 m_knockbackRanges;
 	private List<Attackable> m_collidedObjs = new List<Attackable> ();
 
-	virtual protected void Awake() {
+	virtual public void Init()
+	{
+		m_creatorPhysics = Creator.GetComponent<PhysicsTD>();
 		if (m_isRandomKnockback)
 			RandomizeKnockback ();
 		m_hasDuration = m_duration > 0;
+		Tick();
 	}
 
-	virtual protected void Start() {
-		m_creatorPhysics = Creator.GetComponent<PhysicsTD> ();
+	virtual internal void Update()
+	{
+		Tick();
 	}
 
-	virtual protected void Update() {
+	private void Tick()
+	{
+		if (m_followObj != null)
+			FollowObj();
 		SwitchActiveCollider(m_creatorPhysics.Dir);
 		if (m_hasDuration)
 			MaintainOrDestroyHitbox();
-		if (m_followObj != null)
-			transform.position = new Vector3(m_followObj.transform.position.x + m_followOffset.x, m_followObj.transform.position.y + m_followOffset.y,0);
 	}
 
-	void MaintainOrDestroyHitbox() {
-		if (m_duration <= 0.0f)
-			GameObject.Destroy (gameObject);
-		Duration -= Time.deltaTime;
-	}
-
-	public void SetScale(Vector2 scale) {
+	public void SetScale(Vector2 scale)
+	{
 		transform.localScale = scale;
 	}
 
-	public void SetFollow(GameObject obj, Vector2 offset) {
+	public void SetFollow(GameObject obj, Vector2 offset)
+	{
 		m_followObj = obj;
 		m_followOffset = offset;
 	}
 
-	void RandomizeKnockback () {
-		m_knockback.x = Random.Range (m_knockbackRanges.x, m_knockbackRanges.y);
-		m_knockback.y = Random.Range (m_knockbackRanges.z, m_knockbackRanges.w);
-	}
-
-	public void SetKnockbackRanges (float minX, float maxX,float minY, float maxY) {
+	public void SetKnockbackRanges (float minX, float maxX,float minY, float maxY)
+	{
 		IsRandomKnockback = true;
 		IsFixedKnockback = true;
 		m_knockbackRanges = new Vector4 (minX, maxX, minY, maxY);
 	}
 
-	protected void OnAttackable(Attackable atkObj) {
+	public bool HasHitTypes()
+	{
+		return HitTypes != null && HitTypes.Count > 0;
+	}
+
+	private void MaintainOrDestroyHitbox()
+	{
+		if (m_duration <= 0.0f)
+			GameObject.Destroy (gameObject);
+		Duration -= Time.deltaTime;
+	}
+
+	private void FollowObj()
+	{
+		transform.position = new Vector3(m_followObj.transform.position.x + m_followOffset.x, m_followObj.transform.position.y + m_followOffset.y,0);
+	}
+
+	private void RandomizeKnockback ()
+	{
+		m_knockback.x = Random.Range (m_knockbackRanges.x, m_knockbackRanges.y);
+		m_knockback.y = Random.Range (m_knockbackRanges.z, m_knockbackRanges.w);
+	}
+
+	protected void OnAttackable(Attackable atkObj)
+	{
 		if (!atkObj || atkObj.gameObject == Creator || m_collidedObjs.Contains (atkObj))
 			return;
 		if (IsRandomKnockback)
 			RandomizeKnockback();
-		atkObj.takeHit (this);
+		atkObj.TakeHit(this);
 		m_collidedObjs.Add (atkObj);
 	}
 
-	internal void OnTriggerEnter2D(Collider2D other) {
+	internal void OnTriggerEnter2D(Collider2D other)
+	{
 		OnAttackable (other.gameObject.GetComponent<Attackable> ());
 	}
 
-	internal void OnTriggerExit2D(Collider2D other) {
+	internal void OnTriggerExit2D(Collider2D other)
+	{
 		/*
 		 * TODO: Delay removal of collided object to avoid stuttered collisions 
 		 */
@@ -117,16 +140,21 @@ public class Hitbox : MonoBehaviour {
 		*/
 	}
 
-	void SwitchActiveCollider(Direction dir) {
+	private void SwitchActiveCollider(Direction dir)
+	{
 		if (m_upRightDownLeftColliders.Count == 0)
 			return;
 		var dirIndex = ConvertDirToUpRightDownLeftIndex(dir);
-		for (var i = 0; i < 4; i++) {
-			m_upRightDownLeftColliders[i].enabled = i == dirIndex;
+		// Or'd check on enabled in case collider falls under several categories
+		for (var i = 0; i < m_upRightDownLeftColliders.Count; i++)
+		{
+			m_upRightDownLeftColliders[i].enabled |= (i == dirIndex);
+			Debug.Log (m_upRightDownLeftColliders [i].enabled);
 		}
 	}
 
-	int ConvertDirToUpRightDownLeftIndex(Direction dir) {
+	private int ConvertDirToUpRightDownLeftIndex(Direction dir)
+	{
 		if (dir == Direction.UP)
 			return 0;
 		else if (dir == Direction.RIGHT)

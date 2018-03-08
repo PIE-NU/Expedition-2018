@@ -47,7 +47,7 @@ BoxCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1054257272271882}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -82,7 +82,12 @@ MonoBehaviour:
   m_hasDuration: 1
   m_isFixedKnockback: 0
   m_knockback: {x: 0, y: 40}
-  m_followObj: {fileID: 0}
-  m_followOffset: {x: 0, y: 0}
   m_stun: 0
   m_isRandomKnockback: 0
+  m_followObj: {fileID: 0}
+  m_followOffset: {x: 0, y: 0}
+  m_upRightDownLeftColliders:
+  - {fileID: 61733827546846202}
+  - {fileID: 61733827546846202}
+  - {fileID: 61733827546846202}
+  - {fileID: 61733827546846202}

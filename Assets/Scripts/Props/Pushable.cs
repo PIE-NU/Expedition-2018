@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pushable : MonoBehaviour {
-
+public class Pushable : MonoBehaviour
+{
     //This script is intended for all pushable/draggable objects
-
     private Interactable trigger_area;
     private bool first_trigger;
     Vector2 offset;
     Vector3 char_offset;
-    public string facing_direction;
-    BasicMovement _bm;
+    public Direction FacingDirection;
+    BasicMovement m_basicMovement;
     public bool draggable;
 
     // Use this for initialization
@@ -30,32 +29,24 @@ public class Pushable : MonoBehaviour {
             {
                 //If one of the trigger areas is activated by the interactor assign it to trigger_area
                 trigger_area = area;
-                _bm = trigger_area.actor.gameObject.GetComponent<BasicMovement>();
+				m_basicMovement = trigger_area.actor.gameObject.GetComponent<BasicMovement>();
             }
         }
 
-        //Assign the right direction 
+        // Assign the right direction 
         if (trigger_area.gameObject.GetComponent<BoxCollider2D>().offset.y > 0)
-        {
-            facing_direction = "DOWN";
-        }
-        if (trigger_area.gameObject.GetComponent<BoxCollider2D>().offset.y < 0)
-        {
-            facing_direction = "UP";
-        }
-
+			FacingDirection = Direction.DOWN;
+		if (trigger_area.gameObject.GetComponent<BoxCollider2D>().offset.y < 0)
+			FacingDirection = Direction.UP;
         if (trigger_area.gameObject.GetComponent<BoxCollider2D>().offset.x > 0)
-        {
-            facing_direction = "LEFT";
-        }
+			FacingDirection = Direction.LEFT;
         if (trigger_area.gameObject.GetComponent<BoxCollider2D>().offset.x < 0)
-        {
-            facing_direction = "RIGHT";
-        }
-        //-------------------------------
+			FacingDirection = Direction.RIGHT;
+
         //Update the basic movement script
-        _bm.push_direction = facing_direction;
-        _bm.can_drag_item = draggable;
+		m_basicMovement.DirPush = FacingDirection;
+		m_basicMovement.CanDrag = draggable;
+		m_basicMovement.IsDragging = true;
 
         //Run when the player presses the interaction key
         if (trigger_area.press_trigger && first_trigger)
@@ -83,8 +74,7 @@ public class Pushable : MonoBehaviour {
         if (!trigger_area.press_trigger)
         {
             first_trigger = true;
-            facing_direction = "";
-            _bm.push_direction = "";
+			m_basicMovement.IsDragging = false;
         }
 	}
 }
