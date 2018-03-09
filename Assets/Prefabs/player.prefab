@@ -58,7 +58,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1668270609141688
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,9 +97,6 @@ GameObject:
   - component: {fileID: 114283585766680980}
   - component: {fileID: 114246251947509476}
   - component: {fileID: 114537740095613490}
-  - component: {fileID: 114631276098333672}
-  - component: {fileID: 114087741553059286}
-  - component: {fileID: 114171689289187272}
   m_Layer: 0
   m_Name: player
   m_TagString: Untagged
@@ -155,7 +152,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1797241461104264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.36, y: -0.13, z: 0}
+  m_LocalPosition: {x: -4.06, y: 2.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4029653239499118}
@@ -325,7 +322,7 @@ Light:
     m_Strength: 1
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_NearPlane: 1
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
@@ -356,19 +353,6 @@ MonoBehaviour:
   CastShadows: 1
   ReceiveShadows: 1
   AutoGenerateSideShadows: 0
---- !u!114 &114087741553059286
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1797241461104264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733728664a03e334689e0c3ff27bacc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prompted_interaction: {fileID: 0}
-  Interaction_Key: e
 --- !u!114 &114088344292214322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -384,25 +368,8 @@ MonoBehaviour:
   IdleAnimation: f_idle
   WalkAnimation: f_walk
   HurtAnimation: hit
-  CurrentAttackName: none
-  recoveryTime: 0
-  startUpTime: 0
-  stunTime: 0
   AttackSound: {fileID: 0}
-  hitCombo: 0
---- !u!114 &114171689289187272
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1797241461104264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733728664a03e334689e0c3ff27bacc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prompted_interaction: {fileID: 0}
-  Interaction_Key: e
+  StunTime: 0
 --- !u!114 &114246251947509476
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -414,33 +381,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abb3562db1f413448958ab2ab02ef953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackName: default
-  CreateHitbox: 1
   HitboxScale: {x: 1, y: 1}
   HitboxOffset: {x: 0.5, y: 0}
-  UniqueAIPrediction: 0
-  AIPredictionHitbox: {x: 1, y: 1}
-  AIPredictionOffset: {x: 0.5, y: 0}
-  damage: 10
-  stun: 0.3
-  hitboxDuration: 0.5
-  knockback: {x: 10, y: 0}
-  startUpTime: 0.5
-  recoveryTime: 1
+  Damage: 10
+  Stun: 0.3
+  HitboxDuration: 0.5
+  Knockback: {x: 10, y: 10}
+  AnimSpeed: 1
+  StartUpTime: 0
+  AttackTime: 0.3
+  RecoveryTime: 0.5
+  AttackName: default
+  HitType: melee
   StartUpAnimation: attack_s
   RecoveryAnimation: attack_r
-  animSpeed: 1
-  hitType: melee
-  timeSinceStart: 0
-  attackFX: {fileID: 0}
-  startupSoundFX: {fileID: 0}
-  attackSoundFX: {fileID: 0}
-  startUpDash: {x: 0, y: 0}
-  startUpDuration: 1
-  attackDash: {x: 10, y: 0}
-  attackDashDuration: 0
-  conclusionDash: {x: 0, y: 0}
-  conclusionDuration: 0
+  AttackFX: {fileID: 0}
+  StartupSoundFX: {fileID: 0}
+  AttackSoundFX: {fileID: 0}
+  StartUpDash: {x: 0, y: 0}
+  StartUpDuration: 0
+  AttackDash: {x: 0, y: 0}
+  AttackDashDuration: 0
+  ConclusionDash: {x: 0, y: 0}
+  ConclusionDuration: 0
 --- !u!114 &114283585766680980
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -454,7 +417,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitboxClass: {fileID: 1054257272271882, guid: baee112565b3218489a7c270ce46804e,
     type: 2}
-  mAttrs: []
+  hitTypes: []
 --- !u!114 &114428443045439152
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -479,12 +442,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsCurrentPlayer: 1
   MoveSpeed: 3
-  push_direction: 
-  can_drag_item: 0
-  autonomy: 1
-  minDistance: 1
-  abandonDistance: 10
-  followObj: {fileID: 0}
+  DirPush: 0
+  CanDrag: 0
+  IsDragging: 0
+  m_minDistance: 1
+  m_abandonDistance: 10
 --- !u!114 &114508935763450708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -532,30 +494,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad1d7ab11fb54ec4b8ef8aab1c95e399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 768
-  SelfInput: {x: 0, y: 0}
-  accumulatedVelocity: {x: 0, y: 0}
   Dir: 3
-  canMove: 1
-  AttemptingMovement: 0
+  CollisionMask:
+    serializedVersion: 2
+    m_Bits: 256
   DecelerationRatio: 1
   Y_SpeedRatio: 0.5
-  velocity: {x: 0, y: 0}
---- !u!114 &114631276098333672
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1797241461104264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733728664a03e334689e0c3ff27bacc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prompted_interaction: {fileID: 0}
-  Interaction_Key: e
 --- !u!114 &114675442324502636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -567,20 +511,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cecf518dba7e8f429d2dc6df9ba9177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 30
-  max_health: 100
-  alive: 1
-  immortal: 0
-  faction: noFaction
-  groupID: 
-  HitEffect: {fileID: 0}
-  HealEffect: {fileID: 0}
-  DeathEffect: {fileID: 0}
-  EnergyRegenRate: 10
-  mHitSound: None
-  deathTime: 0
-  deathColor: {r: 0, g: 0, b: 0, a: 1}
-  Hit: {fileID: 0}
+  MaxHealth: 100
+  Alive: 1
+  DeathTime: 0
 --- !u!212 &212165349132785494
 SpriteRenderer:
   m_ObjectHideFlags: 1

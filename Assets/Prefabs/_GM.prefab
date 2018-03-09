@@ -51,3 +51,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f5cd1e8d1e16414e9662937a526ca6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SideShadowTemplate: {fileID: 1861077768817312, guid: cf3c148b4eba0494ba3331314a7e0610,
+    type: 2}
