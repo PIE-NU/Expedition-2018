@@ -19,9 +19,12 @@ public class GameProgress {
 	private List<HubWorldDoorStatus> doorStates;
 
 	public HubWorldDoorStatus GetDoorState(int d){
-		if (d < doorStates.Count && d >= 0){
+		if (d < doorStates.Count && d >= 0)
+		{
 			return doorStates [d];
-		}else{
+		}
+		else
+		{
 			Debug.Log("Bad Call to GetDoorState: out of list index");
 			return HubWorldDoorStatus.unlocked;
 		}

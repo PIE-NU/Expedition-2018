@@ -491,6 +491,16 @@ Prefab:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 114538699581629480, guid: 9b1dc76f5b3a4bb438fe8da4f560982b,
+        type: 2}
+      propertyPath: toCoords.x
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114538699581629480, guid: 9b1dc76f5b3a4bb438fe8da4f560982b,
+        type: 2}
+      propertyPath: toCoords.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9b1dc76f5b3a4bb438fe8da4f560982b, type: 2}
   m_IsPrefabParent: 0
@@ -704,6 +714,11 @@ Prefab:
     - target: {fileID: 1656279020930400, guid: 48b70681550ab6341bfa47b47a369e7a, type: 2}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114289724375596328, guid: 48b70681550ab6341bfa47b47a369e7a,
+        type: 2}
+      propertyPath: toCoords.x
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 48b70681550ab6341bfa47b47a369e7a, type: 2}
