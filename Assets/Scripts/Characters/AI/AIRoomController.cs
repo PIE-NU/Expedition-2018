@@ -5,6 +5,8 @@ using UnityEngine;
 public class AIRoomController : MonoBehaviour {
 
 	private List<AIFighter> m_aiFighters;
+	public List<AIFighter> AiFighters { get { return m_aiFighters; } }
+
 	private Fighter m_player;
 
 	void Awake() {
