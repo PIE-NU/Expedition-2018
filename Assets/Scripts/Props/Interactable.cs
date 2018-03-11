@@ -5,7 +5,6 @@ using UnityEngine;
 public class Interactable : MonoBehaviour {
 
 
-    private Collider2D trigger_area;
     public Interactor actor;
     public string interaction_string;
     public bool hold_trigger;
@@ -13,7 +12,6 @@ public class Interactable : MonoBehaviour {
     
         // Use this for initialization
 	void Start () {
-        trigger_area = GetComponent<Collider2D>();
         actor = null;
         //Will become true if the interactor presses/holds the interaction key while in this interactable's area
         hold_trigger = false;
