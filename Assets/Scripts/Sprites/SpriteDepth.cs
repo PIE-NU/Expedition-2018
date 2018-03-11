@@ -20,7 +20,6 @@ public class SpriteDepth : MonoBehaviour {
 		if (AutoGenerateSideShadows && GetComponent<BoxCollider2D>() && GetComponent<SpriteRenderer>()) {
 
 			BoxCollider2D bc = GetComponent<BoxCollider2D> ();
-			SpriteRenderer sr = GetComponent<SpriteRenderer> ();
 			GameObject t = Instantiate (FindObjectOfType<GameManager> ().SideShadowTemplate, transform);
 			t.GetComponent<SpriteRenderer> ().sprite = m_spr.sprite;
 			Vector3 sc = transform.localScale;
