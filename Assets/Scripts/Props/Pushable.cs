@@ -56,12 +56,9 @@ public class Pushable : MonoBehaviour
 			offset = m_triggerArea.gameObject.GetComponent<Collider2D>().offset;
 			//Because of the perspective, the character has to be slightly futher away when pushing the block down
 			if (offset.y > 0)
-			{
 				char_offset = new Vector3(offset.x * 2.5f, offset.y * 2.7f);
-			} else
-			{
+			else
 				char_offset = new Vector3(offset.x * 2.5f, offset.y * 1f);
-			}
             
 			m_triggerArea.Actor.transform.position = transform.position + char_offset;
 			m_firstTrigger = false;
@@ -71,7 +68,7 @@ public class Pushable : MonoBehaviour
 		{
 			transform.position = -char_offset + m_triggerArea.Actor.transform.position;
 		}
-		else (!m_triggerArea.PressTrigger)
+		else
 		{
 			m_firstTrigger = true;
 			m_basicMovement.IsDragging = false;
