@@ -39,8 +39,15 @@ public class AIRoomController : MonoBehaviour {
 		
 
 	void Update() {
-		foreach (AIFighter fighter in m_aiFighters) {
-			fighter.Routine.Advance();
+		List<AIFighter> removeFighters = new List<AIFighter>();
+		foreach (AIFighter fighter in m_aiFighters)
+		{
+			if (fighter.Fighter)
+				fighter.Routine.Advance();
+			else
+				removeFighters.Add(fighter);
 		}
+		foreach (AIFighter fighter in removeFighters)
+			m_aiFighters.Remove(fighter);
 	}
 }

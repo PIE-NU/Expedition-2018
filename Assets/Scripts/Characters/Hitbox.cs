@@ -33,8 +33,9 @@ public class Hitbox : MonoBehaviour {
 	private List<string> m_hitTypes;
 	public List<string> HitTypes { get { return m_hitTypes; } set { m_hitTypes = value; } }
 
-	[HideInInspector]
-	public GameObject Creator { get; set; }
+	[SerializeField]
+	private GameObject m_creator;
+	public GameObject Creator { get { return m_creator; } set { m_creator = value; } }
 
 	[SerializeField]
 	private GameObject m_followObj;
@@ -125,7 +126,8 @@ public class Hitbox : MonoBehaviour {
 
 	internal void OnTriggerEnter2D(Collider2D other)
 	{
-		OnAttackable (other.gameObject.GetComponent<Attackable> ());
+		Debug.Log("Collision: " + other.gameObject.name);
+		OnAttackable(other.gameObject.GetComponent<Attackable>());
 	}
 
 	internal void OnTriggerExit2D(Collider2D other)

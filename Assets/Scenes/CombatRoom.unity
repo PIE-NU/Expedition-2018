@@ -888,7 +888,6 @@ GameObject:
   - component: {fileID: 913851257}
   - component: {fileID: 913851256}
   - component: {fileID: 913851255}
-  - component: {fileID: 913851267}
   m_Layer: 0
   m_Name: Weaver
   m_TagString: Untagged
@@ -1155,21 +1154,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!114 &913851267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 913851254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6983f8511494e4368a90f1127dc2d868, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HealthSlider: {fileID: 0}
-  Target: {fileID: 0}
-  healthBar: {fileID: 0}
-  currentHealth: 0
 --- !u!1001 &937970252
 Prefab:
   m_ObjectHideFlags: 0
@@ -1361,17 +1345,17 @@ MonoBehaviour:
 --- !u!114 &1054546734
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114304150441316542, guid: 978d0bf0b29944b4abf5b4cfb0a8f2be,
-    type: 2}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1054546731}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31331abafea384fdeabecfa77fa10619, type: 3}
+  m_Script: {fileID: 11500000, guid: 0970f0da5ac534cc8b630502278e4de7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
   Speed: 3
+  DistanceTilShoot: 2
 --- !u!114 &1054546735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1757,17 +1741,16 @@ GameObject:
 --- !u!114 &1769759973
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114515862478135662, guid: 978d0bf0b29944b4abf5b4cfb0a8f2be,
-    type: 2}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1769759972}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abb3562db1f413448958ab2ab02ef953, type: 3}
+  m_Script: {fileID: 11500000, guid: 42ac26ff4dd3a4f41ba6637cc206a732, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   HitboxScale: {x: 1, y: 1}
-  HitboxOffset: {x: 0.5, y: 0}
+  HitboxOffset: {x: 0, y: 0}
   Damage: 10
   Stun: 0.3
   HitboxDuration: 0.5
@@ -1778,17 +1761,13 @@ MonoBehaviour:
   RecoveryTime: 0.5
   AttackName: default
   HitType: melee
-  StartUpAnimation: attack_s
-  RecoveryAnimation: attack_r
+  StartUpAnimation: none
+  RecoveryAnimation: none
   AttackFX: {fileID: 0}
   StartupSoundFX: {fileID: 0}
   AttackSoundFX: {fileID: 0}
-  StartUpDash: {x: 0, y: 0}
-  StartUpDuration: 0
-  AttackDash: {x: 0, y: 0}
-  AttackDashDuration: 0
-  ConclusionDash: {x: 0, y: 0}
-  ConclusionDuration: 0
+  ProjectilePrefab: {fileID: 1326155659445020, guid: 9ff5ec169fd95444f8ee87d672661aef,
+    type: 2}
 --- !u!114 &1769759974
 MonoBehaviour:
   m_ObjectHideFlags: 0

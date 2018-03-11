@@ -12,6 +12,7 @@ public class ProjectileTask : FighterTask
 		if (Vector2.Distance ((Vector2)Fighter.BasicMove.transform.position, target) < DistanceTilShoot)
 		{
 			print ("Fire!");
+			Fighter.Fighter.TryAttack("default");
 		}
 		else 
 		{
