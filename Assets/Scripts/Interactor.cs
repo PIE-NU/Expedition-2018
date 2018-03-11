@@ -14,7 +14,11 @@ public class Interactor : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         col = gameObject.GetComponent<Collider2D>();
-        promt_ui = GameObject.Find("Interaction_prompt").GetComponentInChildren<Text>();
+        if(!GameObject.Find("Interaction_prompt(Clone)"))
+        {
+            Object obj = Object.Instantiate(Resources.Load("Interaction_prompt"));
+        }
+        promt_ui = GameObject.Find("Interaction_prompt(Clone)").GetComponentInChildren<Text>();
 	}
 	
 	// Update is called once per frame
@@ -26,11 +30,18 @@ public class Interactor : MonoBehaviour {
 
             if (col.IsTouching(prompted_interaction.gameObject.GetComponent<Collider2D>()))
             {
-                promt_ui.text = "Press '" + Interaction_Key + "' " + prompted_interaction.interaction_string;
+                if (prompted_interaction.press_trigger == false)
+                {
+                    promt_ui.text = "Press '" + Interaction_Key + "' " + prompted_interaction.interaction_string;
+                }
+                else
+                {
+                    promt_ui.text = "";
+                }
                 if (Input.GetKey(Interaction_Key))
                 {
                     prompted_interaction.hold_trigger = true;
-                    promt_ui.text = "TRIGGERED!";
+                    //promt_ui.text = "TRIGGERED!";
                 }
                 else
                 {

@@ -13,8 +13,10 @@ public class BasicMovement : MonoBehaviour {
 	float m_velocityXSmoothing;
 	float m_velocityYSmoothing;
 
+    [HideInInspector]
     //for pushing items
     public string push_direction;
+    [HideInInspector]
     public bool can_drag_item;
 	//-------------------
 
