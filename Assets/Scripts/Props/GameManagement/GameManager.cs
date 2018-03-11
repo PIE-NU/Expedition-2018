@@ -82,6 +82,6 @@ public class GameManager : MonoBehaviour
 
 	public Vector2 GetPlayerSpawnPosition()
 	{
-		return m_data.ToCoords != null ? m_data.ToCoords : Vector2.zero;
+		return m_data.ToCoords;
 	}
 }
