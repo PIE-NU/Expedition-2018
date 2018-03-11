@@ -30,8 +30,8 @@ public class GameManager : MonoBehaviour
 		{
 			//Instantiation logic should go entirely in here.
 			m_instance = this;
-			m_data = new SessionPersistentData ();
-			m_progress = new GameProgress ();
+			m_data = new SessionPersistentData();
+			m_progress = new GameProgress();
 
 			SceneManager.sceneLoaded += OnSceneLoaded;
 		}
