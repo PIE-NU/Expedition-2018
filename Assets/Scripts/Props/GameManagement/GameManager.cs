@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
 
 	private static GameManager m_instance;
 
-	public static GameManager Instance {
+	public static GameManager Instance
+	{
 		get { return m_instance; }
 		set { m_instance = value; }
 	}
