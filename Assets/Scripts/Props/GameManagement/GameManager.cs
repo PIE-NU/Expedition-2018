@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 {
 
 	private static GameManager m_instance;
+
 	public static GameManager Instance
 	{
 		get { return m_instance; }
@@ -30,45 +31,43 @@ public class GameManager : MonoBehaviour
 			//Instantiation logic should go entirely in here.
 			m_instance = this;
 			m_data = new SessionPersistentData();
-			m_progress = new GameProgress ();
+			m_progress = new GameProgress();
 
 			SceneManager.sceneLoaded += OnSceneLoaded;
 		}
-		else if(m_instance != this)
+		else if (m_instance != this)
 		{
-			Destroy (gameObject);
+			Destroy(gameObject);
 			return;
 		}
 
-		DontDestroyOnLoad (gameObject);
+		DontDestroyOnLoad(gameObject);
 	}
 
-	void OnSceneLoaded (Scene scene, LoadSceneMode mode)
+	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
 		string lastScene = m_data.LastScene;
 
 		if (lastScene != null)
-			Debug.Log ("Last scene was:" + lastScene);
+			Debug.Log("Last scene was:" + lastScene);
 		else
 			Debug.Log("No last scene. Should only see this message once on game load");
-
-		//Debug.Log("Spawnposition at:" + m_data.ToCoords.ToString());
 
 		//TODO: There needs to be a cleaner way to remove/toggle lighting in the hubworld.
 		//		It may be more accessible to move this logic to a Light Controller?
 		//		Also, obviously this needs to be looped.  Temporary for demo purposes.
-		if(scene.name == "HubWorld")
+		if (scene.name == "HubWorld")
 		{
 			//check lights and remove them according to game progress
 			GameObject l0 = GameObject.Find("/ground0/Lantern");
-			GameProgress.HubWorldDoorStatus l0s = m_progress.GetDoorState (0);
+			GameProgress.HubWorldDoorStatus l0s = m_progress.GetDoorState(0);
 			if (l0s != GameProgress.HubWorldDoorStatus.completed)
-				Destroy (l0);
+				Destroy(l0);
 
 			GameObject l1 = GameObject.Find("/ground1/Lantern");
-			GameProgress.HubWorldDoorStatus l1s = m_progress.GetDoorState (1);
+			GameProgress.HubWorldDoorStatus l1s = m_progress.GetDoorState(1);
 			if (l1s != GameProgress.HubWorldDoorStatus.completed)
-				Destroy (l1);
+				Destroy(l1);
 		}
 	}
 
@@ -82,6 +81,6 @@ public class GameManager : MonoBehaviour
 
 	public Vector2 GetPlayerSpawnPosition()
 	{
-		return m_data.ToCoords != null ? m_data.ToCoords : Vector2.zero;
+		return m_data.ToCoords;
 	}
 }
