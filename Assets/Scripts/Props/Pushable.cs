@@ -4,77 +4,74 @@ using UnityEngine;
 
 public class Pushable : MonoBehaviour
 {
-    //This script is intended for all pushable/draggable objects
-    private Interactable trigger_area;
-    private bool first_trigger;
-    Vector2 offset;
-    Vector3 char_offset;
-    public Direction FacingDirection;
-    BasicMovement m_basicMovement;
-    public bool draggable;
+	//This script is intended for all pushable/draggable objects
+	private Interactable m_triggerArea;
+	private bool m_firstTrigger;
+	Vector2 offset;
+	Vector3 char_offset;
+	public Direction FacingDirection;
+	BasicMovement m_basicMovement;
+	public bool Draggable;
 
-    // Use this for initialization
-    void Start() {
-        //trigger_area = gameObject.GetComponentInChildren<Interactable>();
-        first_trigger = true;
-        
+	// Use this for initialization
+	void Start()
+	{
+		//trigger_area = gameObject.GetComponentInChildren<Interactable>();
+		m_firstTrigger = true;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 
-        foreach (Interactable area in gameObject.GetComponentsInChildren<Interactable>())
-        {
-            if (area.press_trigger)
-            {
-                //If one of the trigger areas is activated by the interactor assign it to trigger_area
-                trigger_area = area;
-				m_basicMovement = trigger_area.actor.gameObject.GetComponent<BasicMovement>();
-            }
-        }
+		foreach (Interactable area in gameObject.GetComponentsInChildren<Interactable>())
+		{
+			if (area.PressTrigger)
+			{
+				//If one of the trigger areas is activated by the interactor assign it to trigger_area
+				m_triggerArea = area;
+				m_basicMovement = m_triggerArea.Actor.gameObject.GetComponent<BasicMovement>();
+			}
+		}
 
-        // Assign the right direction 
-        if (trigger_area.gameObject.GetComponent<BoxCollider2D>().offset.y > 0)
+		// Assign the right direction 
+		if (m_triggerArea.gameObject.GetComponent<BoxCollider2D>().offset.y > 0)
 			FacingDirection = Direction.DOWN;
-		if (trigger_area.gameObject.GetComponent<BoxCollider2D>().offset.y < 0)
+		if (m_triggerArea.gameObject.GetComponent<BoxCollider2D>().offset.y < 0)
 			FacingDirection = Direction.UP;
-        if (trigger_area.gameObject.GetComponent<BoxCollider2D>().offset.x > 0)
+		if (m_triggerArea.gameObject.GetComponent<BoxCollider2D>().offset.x > 0)
 			FacingDirection = Direction.LEFT;
-        if (trigger_area.gameObject.GetComponent<BoxCollider2D>().offset.x < 0)
+		if (m_triggerArea.gameObject.GetComponent<BoxCollider2D>().offset.x < 0)
 			FacingDirection = Direction.RIGHT;
 
-        //Update the basic movement script
+		//Update the basic movement script
 		m_basicMovement.DirPush = FacingDirection;
-		m_basicMovement.CanDrag = draggable;
+		m_basicMovement.CanDrag = Draggable;
 		m_basicMovement.IsDragging = true;
 
-        //Run when the player presses the interaction key
-        if (trigger_area.press_trigger && first_trigger)
-        {
+		//Run when the player presses the interaction key
+		if (m_triggerArea.PressTrigger && m_firstTrigger)
+		{
 
-            offset = trigger_area.gameObject.GetComponent<Collider2D>().offset;
-            //Because of the perspective, the character has to be slightly futher away when pushing the block down
-            if(offset.y > 0)
-            {
-                char_offset = new Vector3(offset.x * 2.5f, offset.y * 2.7f);
-            }
-            else
-            {
-                char_offset = new Vector3(offset.x * 2.5f, offset.y * 1f);
-            }
+			offset = m_triggerArea.gameObject.GetComponent<Collider2D>().offset;
+			//Because of the perspective, the character has to be slightly futher away when pushing the block down
+			if (offset.y > 0)
+				char_offset = new Vector3(offset.x * 2.5f, offset.y * 2.7f);
+			else
+				char_offset = new Vector3(offset.x * 2.5f, offset.y * 1f);
             
-            
-            trigger_area.actor.transform.position = transform.position + char_offset;
-            first_trigger = false;
-        }
-        if (trigger_area.press_trigger)
-        {
-            transform.position = -char_offset + trigger_area.actor.transform.position;
-        }
-        if (!trigger_area.press_trigger)
-        {
-            first_trigger = true;
+			m_triggerArea.Actor.transform.position = transform.position + char_offset;
+			m_firstTrigger = false;
+		}
+
+		if (m_triggerArea.PressTrigger)
+		{
+			transform.position = -char_offset + m_triggerArea.Actor.transform.position;
+		}
+		else
+		{
+			m_firstTrigger = true;
 			m_basicMovement.IsDragging = false;
-        }
+		}
 	}
 }
