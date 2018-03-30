@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class LightDetection : MonoBehaviour {
 
-    SpriteRenderer _spr;
+    protected SpriteRenderer _spr;
     GameObject player;
 
     private void Start()
