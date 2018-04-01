@@ -4,187 +4,162 @@ using UnityEngine.UI;
 
 [RequireComponent (typeof (PhysicsTD))]
 [RequireComponent (typeof (Attackable))]
-public class BasicMovement : MonoBehaviour {
+public class BasicMovement : MonoBehaviour
+{
+	private const float MAX_OFFSET_TOLERANCE = 0.1f;
+	private const float SMOOTH_TIME = .1f;
 
-	// m_physics 
 	public bool IsCurrentPlayer = false;
-	float m_accel = .1f;
+
+	// Physics helpers / configurables
 	public float MoveSpeed = 8.0f;
-	float m_velocityXSmoothing;
-	float m_velocityYSmoothing;
+	private PhysicsTD m_physics;
+	private Vector2 m_velocity;
+	private float m_accelerationX = 0;
+	private float m_accelerationY = 0;
 
-    //for pushing items
-    public string push_direction;
-    public bool can_drag_item;
-	//-------------------
+    // Push/Pull mechanic
+    public Direction DirPush;
+    public bool CanDrag;
+	public bool IsDragging = false;
 
-	PhysicsTD m_physics;
-	Attackable m_attackable;
-	AnimatorSprite m_anim;
+	// Movement tracking
+	private Vector2 m_inputMove;
+	private Vector3 m_targetPoint;
+	private bool m_targetSet = false;
+	private bool m_targetObj = false;
 
-	float inputX = 0.0f;
-	float inputY = 0.0f;
-	public bool autonomy = true;
+	public float m_minDistance = 1.0f;
+	public float m_abandonDistance = 10.0f;
+	private PhysicsTD m_followObj;
+	private bool m_autonomy = true;
 
-	bool targetSet = false;
-	bool targetObj = false;
-	Vector3 targetPoint;
-	public float minDistance = 1.0f;
-	public float abandonDistance = 10.0f;
-	public PhysicsTD followObj;
-	Vector2 Velocity;
-
-	internal void Start()  {
-		m_anim = GetComponent<AnimatorSprite> ();
-		m_physics = GetComponent<PhysicsTD> ();
-		m_attackable = GetComponent<Attackable> ();
-		Reset ();
-		//if (followObj != null) {
-		//	setTarget (followObj);
-		//}
+	internal void Awake()
+	{
+		m_physics = GetComponent<PhysicsTD>();
 	}
 
-	public void Reset() {
-		m_attackable.alive = true;
+	internal void Update()
+	{
+		if (IsCurrentPlayer && Input.GetButton("Fire1"))
+			GetComponent<Fighter>().TryAttack("default");
+
+		if (!m_physics.CanMove)
+			return;
+		
+		if (IsCurrentPlayer && m_autonomy)
+			PlayerMovement();
+		else if (m_targetSet)
+			NpcMovement();
+
+		MoveSmoothly();
 	}
 
-	public void onHitConfirm(GameObject otherObj) {}
+	internal void PlayerMovement() {
+		m_inputMove = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+		ApplyPushPullInput();
+		SetDirectionFromInput();
+	}
 
-	void Update() {
-		if (IsCurrentPlayer) {
-			playerMovement ();
-		} else {
-			npcMovement ();
+	private void NpcMovement()
+	{
+		if (m_targetObj)
+		{
+			if (m_followObj == null)
+			{
+				EndTarget ();
+				return;
+			}
+			m_targetPoint = m_followObj.transform.position;
 		}
-		//m_physics logic
-		float targetVelocityX = inputX * MoveSpeed;
-		float targetVelocityY = inputY * MoveSpeed;
-		Velocity.x = Mathf.SmoothDamp (Velocity.x, targetVelocityX, ref m_velocityXSmoothing, m_accel);
-		Velocity.y = Mathf.SmoothDamp (Velocity.y, targetVelocityY, ref m_velocityYSmoothing, m_accel);
-		Vector2 input = new Vector2 (inputX, inputY);
-		m_physics.Move (Velocity, input);
-		m_physics.AttemptingMovement = (inputX != 0.0f || inputY != 0.0f);
+		MoveToPoint(m_targetPoint);
 	}
 
 
-	internal void playerMovement() {
-		inputX = 0.0f;
-		inputY = 0.0f;
-		if (!autonomy && m_physics.canMove && targetSet) {
-			if (targetObj) {
-				if (followObj == null) {
-					endTarget ();
-					return;
-				}
-				targetPoint = followObj.transform.position;
-			}
-			moveToPoint (targetPoint);
-		}else if (m_physics.canMove && autonomy) {
-			inputY = Input.GetAxis ("Vertical");
-			inputX = Input.GetAxis("Horizontal");
-            //When pushing an object L/R, we cannot move U/D (vice versa)
-            if(push_direction== "UP" || push_direction == "DOWN")
-            {
-                inputX = 0;
-                if(push_direction == "UP" && !can_drag_item && inputY < 0)
-                {
-                    inputY = 0;
-                }
-                if (push_direction == "DOWN" && !can_drag_item && inputY > 0)
-                {
-                    inputY = 0;
-                }
-            }
-            else if (push_direction == "LEFT" || push_direction == "RIGHT")
-            {
-                inputY = 0;
-                if (push_direction == "LEFT" && !can_drag_item && inputX > 0)
-                {
-                    inputX = 0;
-                }
-                if (push_direction == "RIGHT" && !can_drag_item && inputX < 0)
-                {
-                    inputX = 0;
-                }
-            }
-            //------------------------------------------------------------
-            if (inputX > 0.1f) {
-				m_physics.setDirection (Direction.RIGHT);
-			} else if (inputX < -0.1f) {
-				m_physics.setDirection (Direction.LEFT);
-			}
-			if (inputY  > 0.1f) {
-				m_physics.setDirection (Direction.UP);
-			} else if (inputY < -0.1f) {
-				m_physics.setDirection (Direction.DOWN);
-			}
-			if (Input.GetButton ("Fire1")) {
-				GetComponent<Fighter> ().tryAttack ("default");
-			}
+	private void MoveSmoothly()
+	{
+		Vector2 targetVel = new Vector2(m_inputMove.x * MoveSpeed, m_inputMove.y * MoveSpeed);
+		m_velocity.x = Mathf.SmoothDamp(m_velocity.x, targetVel.x, ref m_accelerationX, SMOOTH_TIME);
+		m_velocity.y = Mathf.SmoothDamp(m_velocity.y, targetVel.y, ref m_accelerationY, SMOOTH_TIME);
+		m_physics.Move(m_velocity, m_inputMove);
+	}
+
+	private void ApplyPushPullInput()
+	{
+		if (!IsDragging)
+			return;
+		
+		if (DirPush == Direction.DOWN || DirPush == Direction.UP)
+		{
+			m_inputMove.x = 0;
+			if (DirPush == Direction.UP && !CanDrag && m_inputMove.y < 0)
+				m_inputMove.y = 0;
+			else if (DirPush == Direction.DOWN && !CanDrag && m_inputMove.y > 0)
+				m_inputMove.y = 0;
+		}
+		else if (DirPush == Direction.LEFT || DirPush == Direction.RIGHT)
+		{
+			m_inputMove.y = 0;
+			if (DirPush == Direction.LEFT && !CanDrag && m_inputMove.x > 0)
+				m_inputMove.x = 0;
+			else if (DirPush == Direction.RIGHT && !CanDrag && m_inputMove.x < 0)
+				m_inputMove.x = 0;
 		}
 	}
 
-	//=== NPC movement ====
-
-	void npcMovement () {
-		if (targetSet) {
-			if (targetObj) {
-				if (followObj == null) {
-					endTarget ();
-					return;
-				}
-				targetPoint = followObj.transform.position;
-			}
-			moveToPoint (targetPoint);
-		}
+	// Priority goes to UP and DOWN directions
+	private void SetDirectionFromInput()
+	{
+		if (Mathf.Abs(m_inputMove.x) > MAX_OFFSET_TOLERANCE)
+			m_physics.SetDirection(m_inputMove.x < 0 ? Direction.LEFT : Direction.RIGHT);
+		if (Mathf.Abs(m_inputMove.y) > MAX_OFFSET_TOLERANCE)
+			m_physics.SetDirection(m_inputMove.y < 0 ? Direction.DOWN: Direction.UP);
 	}
 
-	public void moveToPoint(Vector3 point) {
-		inputX = 0.0f;
-		inputY = 0.0f;
+	private void SetInputAndDirectionFromOffset(Vector2 offset)
+	{
+		if (Mathf.Abs(offset.x) > MAX_OFFSET_TOLERANCE)
+			m_inputMove.x = offset.x < 0 ? -1.0f : 1.0f;
+		if (Mathf.Abs(offset.y) > MAX_OFFSET_TOLERANCE)
+			m_inputMove.y = offset.y < 0 ? -1.0f : 1.0f;
+		SetDirectionFromInput();
+	}
 
-		float dist = Vector3.Distance (transform.position, point);
-		if (dist > abandonDistance || dist < minDistance) {
-			endTarget ();
-		} else {
-			if (m_physics.canMove && dist > minDistance) {
-				if (point.x - transform.position.x  > 0.1f) {
-					inputX = 1.0f;
-					m_physics.setDirection (Direction.RIGHT);
-				} else if (transform.position.x - point.x > 0.1f) {
-					inputX = -1.0f;
-					m_physics.setDirection (Direction.LEFT);
-				}
-				if (point.y - transform.position.y  > 0.1f) {
-					inputY = 1.0f;
-					m_physics.setDirection (Direction.UP);
-				} else if (transform.position.y - point.y > 0.1f) {
-					inputY = -1.0f;
-					m_physics.setDirection (Direction.DOWN);
-				}
-			}
+	public void MoveToPoint(Vector3 point)
+	{
+		m_inputMove = new Vector2(0,0);
+		float dist = Vector3.Distance(transform.position, point);
+
+		if (dist > m_abandonDistance || dist < m_minDistance)
+		{
+			EndTarget();
+			return;
 		}
 
-	}
-	public void setTargetPoint(Vector3 point, float proximity) {
-		setTargetPoint (point, proximity, float.MaxValue);
-	}
-	public void setTargetPoint(Vector3 point, float proximity,float max) {
-		targetPoint = point;
-		minDistance = proximity;
-		abandonDistance = max;
-		targetSet = true;
+		if (m_physics.CanMove && dist > m_minDistance)
+			SetInputAndDirectionFromOffset(point - transform.position);
 	}
 
-	void setTarget(PhysicsTD target) {
-		targetObj = true;
-		targetSet = true;
-		followObj = target;
+	public void SetTargetPoint(Vector3 point, float proximity, float max = float.MaxValue)
+	{
+		m_targetPoint = point;
+		m_minDistance = proximity;
+		m_abandonDistance = max;
+		m_targetSet = true;
 	}
-	public void endTarget() {
-		targetSet = false;
-		targetObj = false;
-		followObj = null;
-		minDistance = 0.2f;
+
+	private void SetTarget(PhysicsTD target)
+	{
+		m_targetObj = true;
+		m_targetSet = true;
+		m_followObj = target;
+	}
+
+	public void EndTarget()
+	{
+		m_targetSet = false;
+		m_targetObj = false;
+		m_followObj = null;
+		m_minDistance = 0.2f;
 	}
 }
