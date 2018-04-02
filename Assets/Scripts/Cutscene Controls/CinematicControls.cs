@@ -12,9 +12,9 @@ public class CinematicControls : MonoBehaviour {
                 DisplaysText,
                 RequiresInput;
     private Collider2D _trigger;
-    private GameObject _player;
-    private double _timer;
-    private bool _playing;
+    private GameObject _mplayer;
+    private double _mtimer;
+    private bool _mplaying;
 
 	// Use this for initialization
 	void Start () {
@@ -23,13 +23,13 @@ public class CinematicControls : MonoBehaviour {
 
     void Update()
     {
-        if (_playing)
+        if (_mplaying)
         {
-            _timer -= Time.deltaTime;
-            if (_timer <= 0)
+            _mtimer -= Time.deltaTime;
+            if (_mtimer <= 0)
             {
                 EventManager.TriggerEnd();
-                _playing = false;
+                _mplaying = false;
             }
         }
     }
@@ -56,10 +56,10 @@ public class CinematicControls : MonoBehaviour {
 
     public void PlayTimeline()
     {
-        if (!_player)
-            _player = GameObject.Find("player");
+        if (!_mplayer)
+            _mplayer = GameObject.Find("player");
 
-        var pd = _player.GetComponent<PlayableDirector>();
+        var pd = _mplayer.GetComponent<PlayableDirector>();
         pd.playableAsset = CutsceneTimeline;
         pd.Play();
         EndAt();
@@ -67,25 +67,25 @@ public class CinematicControls : MonoBehaviour {
 
     void EndAt()
     {
-        _timer = CutsceneTimeline.duration;
-        _playing = true;
+        _mtimer = CutsceneTimeline.duration;
+        _mplaying = true;
     }
 	
     public void DisablePlayerMovement()
     {
-        _player.GetComponent<BasicMovement>().enabled = false;
+        _mplayer.GetComponent<BasicMovement>().enabled = false;
     }
 
     public void RestorePlayerMovement()
     {
-        _player.GetComponent<BasicMovement>().enabled = true;
+        _mplayer.GetComponent<BasicMovement>().enabled = true;
     }
 
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.name == "player")
         {
-            _player = other.gameObject;
+            _mplayer = other.gameObject;
             EventManager.TriggerCutscene();
         }
     }
