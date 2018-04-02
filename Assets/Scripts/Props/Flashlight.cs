@@ -14,7 +14,9 @@ public class Flashlight : MonoBehaviour {
 
     private Quaternion upRotation, downRotation, leftRotation, rightRotation;
 
-    private Direction dir;
+    public Direction dir;
+
+    public bool DirOverride;
 
     // Use this for initialization
     void Start () {
@@ -27,26 +29,31 @@ public class Flashlight : MonoBehaviour {
 		rightRotation = Quaternion.Euler(20f, 70f, -90f);
 
 
-        dir = directionComponent.Dir;
-        ChooseDirection();
+        Direction d = directionComponent.Dir;
+        ChooseDirection(d);
     }
 	void OnEnable()
     {
-        ChooseDirection();
+        Direction d = directionComponent.Dir;
+        ChooseDirection(d);
     }
 	// Update is called once per frame
 	void Update () {
 
         Direction d = directionComponent.Dir;
-        if (d != dir)
+        if (!DirOverride && d != dir)
         {
-            ChooseDirection();
+            ChooseDirection(d);
+        }
+        else
+        {
+            d = dir;
+            ChooseDirection(d);
         }
     }
 
-    void ChooseDirection()
+    void ChooseDirection(Direction d)
     {
-        Direction d = directionComponent.Dir;
         switch (d)
         {
             //Add position to player pos
@@ -70,4 +77,5 @@ public class Flashlight : MonoBehaviour {
         }
         dir = d;
     }
+    
 }
