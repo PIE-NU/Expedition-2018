@@ -14,7 +14,7 @@ public class AudioManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		m_musicSource = GameObject.Find("GameMusic");
-		if (m_musicSource === null) {
+		if (m_musicSource == null) {
 			//panic
 			Debug.Log("Audio manager unable to find GameMusic");
 		}
